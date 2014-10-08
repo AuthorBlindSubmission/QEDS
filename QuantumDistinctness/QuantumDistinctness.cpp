@@ -43,6 +43,8 @@ QuantumDistinctness::QuantumDistinctness() {
 	strcpy(quantumFileName, "quantumDistinctness.txt");
 
 	utils = new Utils;
+
+	elements2 = NULL;
 }
 
 /**
@@ -55,8 +57,8 @@ QuantumDistinctness::QuantumDistinctness() {
 *      NENHUM
 */
 QuantumDistinctness::~QuantumDistinctness() {
+	free(elements2);
 	delete utils;
-	cout << "SAINDO DO SIMULADOR2" << endl;
 }
 
 /**
@@ -74,8 +76,19 @@ QuantumDistinctness::~QuantumDistinctness() {
 *   N -> tamanho da lista.
 *   r -> N^(2/3).
 */
-void QuantumDistinctness::init(vector<int> _elements) {
-	elements = _elements;
+void QuantumDistinctness::init(vector<int> _elements, int length) {
+	//elements = _elements;
+	
+	N = length;
+    elements2 = (int *) malloc(sizeof(int) * (N));
+	
+    vector<int>::iterator current = _elements.begin(),
+                              end = _elements.end();
+    int a = 0;
+	for(int i=0; i < N; i++) {
+        elements2[i] = (*current);
+		current++;
+    }
 
 	initialStep();
 
@@ -98,7 +111,7 @@ void QuantumDistinctness::init(vector<int> _elements) {
 *      NENHUM
 */
 void QuantumDistinctness::initialStep() {
-	N = elements.size();
+	//N = elements.size();
 
 	float exponent = (k) / (k + 1.0);
 	r = (int) pow(N, exponent);
@@ -113,12 +126,16 @@ void QuantumDistinctness::initialStep() {
 	time = clock();
 
 	quantumFile << "Elements: [";
-	vector<int>::iterator current = elements.begin(),
+	/*vector<int>::iterator current = elements.begin(),
 					          end = elements.end();
 	end--;
 	for (; current != end; current++)
 		quantumFile << (*current) << ", ";
-	quantumFile << (*end) << "]\n";
+	quantumFile << (*end) << "]\n";*/
+	
+	for(int i=0; i<N-1;i++)
+		quantumFile << elements2[i] << ", ";
+	quantumFile << elements2[N-1] << "]\n";
 
 	quantumFile << "N: " << N << "\n";
 
@@ -217,7 +234,7 @@ void QuantumDistinctness::thirdStepA() {
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
 	for (; current != end; current++)
-		(*current).search_distinctness_change_signal(k, elements);
+		(*current).search_equals_change_signal(elements2, k);
 }
 
 /*
@@ -260,9 +277,9 @@ void QuantumDistinctness::secondStepQuantumWalk() {
 		yCurrent = y.begin();
 		yEnd = y.end();
 		for (; yCurrent != yEnd; yCurrent++){
-			s = (*current).getS();
-			s.insert((*yCurrent).first);
-			vector<int> v(s.begin(), s.end());
+			s = (*current).getS();//N
+			s.insert((*yCurrent).first);//log N
+			vector<int> v(s.begin(), s.end());//N
 			int posicao = utils->calculate_position(v, 0, N, r+1, 0);
 			statesDimensionHLine[posicao].change_amplitude((*yCurrent).first, (*yCurrent).second);
 		}
@@ -375,16 +392,18 @@ void QuantumDistinctness::measure2() {
     vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
     double cumulativeProbability = 0.0f;
+	int found = 0;
 	for (; current != end; current++){
-		cout << "Probabilidade: " <<  cumulativeProbability;
-		cumulativeProbability = (*current).measure(cumulativeProbability, random, root, quantumFile);
+		//cout << "Probabilidade: " <<  cumulativeProbability;
+		cumulativeProbability = (*current).measurement(cumulativeProbability, (double)random, root, found);
 
-		if(cumulativeProbability > 0)
-			cout << " " <<  cumulativeProbability << endl;
-		else
-			cout << " " << -cumulativeProbability << endl;
+		//if(cumulativeProbability > 0)
+			//cout << " " <<  cumulativeProbability << endl;
+		//else
+			//cout << " " << -cumulativeProbability << endl;
 		//if(cumulativeProbability == -1.0f){
-		if(cumulativeProbability < 0){	
+		//if(cumulativeProbability < 0){	
+		if(found == 1){
 			stringstream answer;
 
 			if(verifyCollision((*current).getS())){
@@ -403,8 +422,9 @@ void QuantumDistinctness::measure2() {
 			quantumFile << answer.str() << "\n";
 			cout << answer.str() << "\n\n";
 
-			//return;
-			cumulativeProbability*=-1;
+			//return; 
+			//cumulativeProbability*=-1;
+			found = 0;//return;
 		}
 	}
 }
@@ -416,7 +436,7 @@ void QuantumDistinctness::display_file_without_x_H() {
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
 	for (; current != end; current++)
-		(*current).display_file_without_x(quantumFile);
+		(*current).display_in_file_without_x(quantumFile);
 
 	quantumFile << "]\n\n\n";
 }
@@ -430,7 +450,7 @@ void QuantumDistinctness::display_file_with_x_H() {
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
 	for (; current != end; current++)
-		(*current).display_file_with_x(quantumFile, elements);
+		(*current).display_in_file_with_x(quantumFile, elements2);
 
 	quantumFile << "]\n\n\n";
 }
@@ -444,7 +464,7 @@ void QuantumDistinctness::display_file_with_x_H_Line() {
 	vector<State>::iterator current = statesDimensionHLine.begin(),
 							    end = statesDimensionHLine.end();
 	for (; current != end; current++)
-		(*current).display_file_with_x(quantumFile, elements);
+		(*current).display_in_file_with_x(quantumFile, elements2);
 
 	quantumFile << "]\n\n\n";
 }
@@ -572,7 +592,7 @@ bool QuantumDistinctness::verifyCollision(set<int> S){
 		auxiliar = ++current;
 		current--;
 		for (; auxiliar != end; auxiliar++) {
-			if (elements[(*current) - 1] == elements[(*auxiliar) - 1]) {
+			if (elements2[(*current) - 1] == elements2[(*auxiliar) - 1]) {
 				return true;
 			}
 		}

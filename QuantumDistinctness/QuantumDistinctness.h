@@ -16,10 +16,11 @@ public:
 	QuantumDistinctness();
 	virtual ~QuantumDistinctness();
 
-	void init(vector<int> _elements);
+	void init(vector<int> _elements, int length);
 
 private:
-	vector<int> elements;
+	//vector<int> elements;
+	int *elements2;
 	int N;
 	int r;
 	int k;
@@ -72,4 +73,4 @@ private:
 };
 
 
-#endif /* QUANTUMDISTINCTNESS_H_ */
+#endif

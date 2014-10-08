@@ -38,7 +38,7 @@ int main() {
 	vector = usuario();*/
 	
 	QuantumDistinctness quantum;
-	quantum.init(vector);
+	quantum.init(vector, (int) vector.size());
 
 
 	//vector<int> vetor;

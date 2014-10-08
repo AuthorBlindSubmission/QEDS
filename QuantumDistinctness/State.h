@@ -1,8 +1,23 @@
 /*
- * State.h
+ * Simulador de Distinção de Elementos
  *
- *  Created on: 15/02/2014
- *      Author: Alexandre & Matheus
+ * File: State.h
+ *
+ * Created on: 15/02/2014
+ *    Authors: Alexandre Santiago de Abreu
+ *             Matheus Manzoli Ferreira
+ *
+ *      Email: alexandresantiago@id.uff.br
+ *             matheusmanzoli@gmail.com
+ *
+ * Trabalho de Monografia para a 
+ * Universidade Federal Fluminense.
+ * Instituto de Computação.
+ * Niterói, Rio de Janeiro, Brasil.
+ *
+ * Este arquivo contém as chamadas dos métodos
+ * da Classe State usadas no Simulador de Distinção 
+ * de Elementos.
  */
 
 #ifndef STATE_H_
@@ -17,21 +32,18 @@ public:
     virtual ~State();
 
     void insert_in_S(string elements);
-    void insert_in_S(int element);
-    void insert_in_S(vector<int> elements);
     void insert_in_y(string elements);
     void insert_in_y(int element);
-    void insert_in_y(vector<int> elements);
 
-    void display_file_without_x(ofstream& quantumFile);
-    void display_file_with_x(ofstream& quantumFile, vector<int> elements);
+    void display_in_file_without_x(ofstream& quantumFile);
+	void display_in_file_with_x(ofstream& quantumFile, int *elements);
 
-    void search_distinctness_change_signal(int kDistinctness, vector<int> elements);
+	void search_equals_change_signal(int *elements, int kDistinctness);
     void transformation_mapping(float factor);
 
-    void change_amplitude(int first, double second);
+    void change_amplitude(int first, double amplitude);
 
-    double measure(double cumulativeProbability, int random, unsigned int root, ofstream& quantumFile);
+    double measurement(double cumulativeProbability, double random, unsigned int root, int &found);
 
     bool amplitudes_equals_of_y();
     double getAmplitude();

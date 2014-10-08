@@ -46,32 +46,31 @@ Utils::~Utils() {
  *
  * Parâmetros:
  * n = tamanho do conjunto
- * s = tamanho do subconjunto
+ * r = tamanho do subconjunto
  *
- * Computational Complexity:
- * O((n^2 - n)/2)
+ * Computational Complexity (Big-O Notation):
  * O(n^2)
  */
-unsigned int Utils::combinatorial(int n, int s) {
+unsigned int Utils::combinatorial(int n, int r) {
     if(n == 0)
         return 1;
 
     if(binomialCoefficients != NULL && binomialCoefficients[1] == n)
-        return binomialCoefficients[s];
+        return binomialCoefficients[r];
 		
     if(binomialCoefficients != NULL)
         free(binomialCoefficients);
 	
     binomialCoefficients = (unsigned int *) malloc(sizeof(unsigned int) * (n+1));
     binomialCoefficients[0] = 1;
-    for(int i = 1; i <= n; i++) {
+    for(int i = 1; i <= n; i++) { //O(n)
         binomialCoefficients[i] = 1;
-        for(int j = i - 1; j > 0; j--) {
+        for(int j = i - 1; j > 0; j--) { //O(n)
             binomialCoefficients[j] += binomialCoefficients[j - 1];
         }
     }
 
-    return binomialCoefficients[s];
+    return binomialCoefficients[r];
 }
 
 /*
@@ -82,23 +81,23 @@ unsigned int Utils::combinatorial(int n, int s) {
  *
  * Parâmetros:
  * S = 
- * initialPositionS = 
+ * initialPositionS = posição inicial do vetor S
  * N = tamanho total dos valores
  * r = tamanho do subconjunto
- * previousS = 
+ * previousValueS = valor anterior a posição inicial do vetor S
  *
- * Computational Complexity:
+ * Computational Complexity (Big-O Notation):
  * O()
  * O()
  */
-int Utils::calculate_position(vector<int> S, int initialPositionS, int N, int r, int previousS) {
+int Utils::calculate_position(vector<int> S, int initialPositionS, int n, int r, int previousValueS) {
     int t = 0;
-    for(int i = previousS + 1; i <= S[initialPositionS] - 1; i++)
-        t = t + combinatorial(N-i, r-1);
+    for(int i = previousValueS + 1; i <= S[initialPositionS] - 1; i++)
+        t = t + combinatorial(n-i, r-1);
     if(r == 2)
         return S[initialPositionS+1] - S[initialPositionS] - 1 + t;
     else{
-        int t1 = calculate_position(S, initialPositionS + 1, N, r - 1, S[initialPositionS]);
+        int t1 = calculate_position(S, initialPositionS + 1, n, r - 1, S[initialPositionS]);
         return t + t1;
     }
 }
@@ -112,19 +111,20 @@ int Utils::calculate_position(vector<int> S, int initialPositionS, int N, int r,
  * set1 = conjunto 1
  * set2 = conjunto 2
  *
- * Computational Complexity:
- * s1 = tamanho de set1 ==>  s1 <= N
+ * Computational Complexity (Big-O Notation):
+ * s1 = tamanho de set1 ==>  s1 <= r
  * s2 = tamanho de set2 ==>  s2 == r
- * O(N*r)
+ * O Set utiliza a árvore rubro-negra
+ * O(r*log(r))
  */
 set<int> Utils::set_intersection(set<int> set1, set<int> set2) {
     set<int> result;
     set<int>::iterator current = set1.begin(),
                            end = set1.end();
 
-    for(; current != end; current++) {
-        if(set2.find(*current) != set2.end())
-            result.insert((*current));
+    for(; current != end; current++) { //O(r)
+        if(set2.find(*current) != set2.end()) 
+            result.insert((*current)); //O(log(r))
     }
 
     return result;
