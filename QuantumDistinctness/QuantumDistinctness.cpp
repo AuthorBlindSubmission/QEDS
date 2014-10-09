@@ -721,13 +721,13 @@ void QuantumDistinctness::combination_H_Line(string before, string after,
 void QuantumDistinctness::menu(){
 	char option;
 	string line;
-	cout << "Bem-Vindo ao Simulador de Distincao de Elementos\n" << endl;//cout << "Welcome to Quantum Distinctness Simulator\n" << endl;
-	cout << "Selecione sua Opcao\n";//cout << "Select Your Option\n";
-	cout << "1 - Definir Valores Aleatorios\n";
-	cout << "2 - Definir Valores\n";
-	cout << "0 - Sair\n";//cout << "0 - Exit\n";
+	cout << "Welcome to Element Distinctness Simulator\n" << endl;
+	cout << "Select Your Option\n";
+	cout << "1 - Generate Random Values\n";
+	cout << "2 - Define My Own Values\n";
+	cout << "0 - Exit\n";
 	cout << endl;
-	cout << "Opcao: ";//cout << "Option: ";
+	cout << "Option: ";
 	getline(cin, line);
 	cout << endl;
 	option = line.at(0);
@@ -745,8 +745,8 @@ void QuantumDistinctness::menu(){
 			userList();
 			break;
 		default:
-			cout << "Opcao Invalida!!!\n\n";//cout << "Invalid option!!!\n\n";
-			cout << "Pressione qualquer tecla para continuar...";
+			cout << "Invalid option!!!\n\n";
+			cout << "Press any key to continue...";
 			system("pause > nul");
 			system("cls");
 			menu();
@@ -764,11 +764,11 @@ void QuantumDistinctness::menu(){
  */
 void QuantumDistinctness::randomList(){ //fazer proteções?
 	int lowerLimit, upperLimit;
-	cout << "Diga a quantidade de numeros: ";
+	cout << "Enter the number of values: ";
 	cin >> N;
-	cout << "Diga o limite inferior: ";
+	cout << "Enter the lower limit: ";
 	cin >> lowerLimit;
-	cout << "Diga o limite superior: ";
+	cout << "Enter the upper limit: ";
 	cin >> upperLimit;
 
 	elements = (int *) malloc(sizeof(int) * N);
@@ -788,11 +788,11 @@ void QuantumDistinctness::randomList(){ //fazer proteções?
  * O(n)
  */
 void QuantumDistinctness::userList(){ //fazer proteções?
-	cout << "Diga a quantidade de numeros: ";
+	cout << "Enter the number of values: ";
 	cin >> N;
 	elements = (int *) malloc(sizeof(int) * N);
 	for(int i = 0; i < N; i++){
-		cout << "Diga o numero " << (i+1) << ": ";
+		cout << "Enter number " << (i+1) << ": ";
 		cin >> elements[i];
 	}
 	cout << endl;
