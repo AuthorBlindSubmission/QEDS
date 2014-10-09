@@ -31,10 +31,7 @@ public:
 	QuantumDistinctness();
 	virtual ~QuantumDistinctness();
 
-	void init();
-
 private:
-	//vector<int> elements;
 	int *elements;
 	int N;
 	int r;
@@ -53,8 +50,8 @@ private:
 
 	Utils *utils;
 
-	void initialStep();
-	void finalStep();
+	void init();
+	void end();
 
 	void firstStep();
 	void secondStep();
@@ -71,14 +68,14 @@ private:
 	void fifthStepQuantumWalk();
 	void sixthStepQuantumWalk();
 
-	void measure();
-	void measure2();
+	void deterministic_measurement();
+	void probabilistic_measurement();
 
 	bool verifyCollision(set<int> S);
 
-	void display_file_without_x_H();
-	void display_file_with_x_H();
-	void display_file_with_x_H_Line();
+	void display_in_file_without_x_H();
+	void display_in_file_with_x_H();
+	void display_in_file_with_x_H_Line();
 
 	void sub_sets_H();
 	void sub_sets_H_Line();
@@ -90,6 +87,5 @@ private:
 	void userList();
 
 };
-
 
 #endif

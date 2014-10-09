@@ -22,29 +22,22 @@
 
 #include "Library.h"
 
-/**
-*   Construtor do simulador
-*   Inicialização de todas as váriaveis
-*
-*   Parâmetros:
-*      NENHUM
-*
-*   Retorno:
-*      NENHUM
-*
-*   MINIMUM -> tamanho mínimo da lista.
-*   MAXIMUM -> tamanho máximo da lista.
-*         N -> tamanho da lista.
-*         r -> N^(2/3).
-*         k -> quantidade de números distintos que a lista deve possuir.
-*      root -> valor para o calculo da amplitude.
-*  quantumName -> nome do arquivo em que será guardado todos os passos do algoritmo
-*/
+/*
+ * Construtor do simulador
+ *
+ * Inicialização de todas as variáveis
+ *
+ * Parâmetros:
+ * elements = lista de valores para achar a distinção
+ * minimum = tamanho mínimo da lista.
+ * maximum = tamanho máximo da lista.
+ * N = tamanho da lista, definida posteriormente
+ * r = N^(2/3), definida posteriormente
+ * k = quantidade de números distintos que a lista deve possuir.
+ * root = valor para o calculo da amplitude.
+ * quantumName = nome do arquivo em que será guardado todos os passos do algoritmo
+ */
 QuantumDistinctness::QuantumDistinctness() {
-	MINIMUM = 3; //faz r no minimo 2, satisfazendo r >= k
-
-	MAXIMUM = 34;
-
 	N = 0;
 
 	r = 0; //r>= k
@@ -61,97 +54,45 @@ QuantumDistinctness::QuantumDistinctness() {
 
 	elements = NULL;
 
+	MINIMUM = 3; //faz r no minimo 2, satisfazendo r >= k
+
+	MAXIMUM = 34;
+
 	menu();
+
+	init();
 }
 
-/**
-*   Destrutor do simulador
-*
-*   Parâmetros:
-*      NENHUM
-*
-*   Retorno:
-*      NENHUM
-*/
+/*
+ * Destrutor do simulador
+ */
 QuantumDistinctness::~QuantumDistinctness() {
 	if(elements != NULL)
 		free(elements);
+	
 	delete utils;
 }
 
-/**
-*   Início do simulador
-*   Cálculo de algumas das variáveis
-*   Chama os passos do algoritmo
-*
-*   Parâmetros:
-*      vector<int> elements -> Vetor com os elementos.
-*
-*   Retorno:
-*      NENHUM
-*
-*   M -> Vetor com os elementos.
-*   N -> tamanho da lista.
-*   r -> N^(2/3).
-*/
+/*
+ * Init
+ *
+ * Início do simulador
+ * Cálculo de algumas das variáveis
+ * Chama os passos do algoritmo
+ */
 void QuantumDistinctness::init() {
-	//elements = _elements;
-	
-	//N = length;
-    //elements = (int *) malloc(sizeof(int) * (N));
-	
-    /*vector<int>::iterator current = _elements.begin(),
-                              end = _elements.end();
-    int a = 0;
-	for(int i=0; i < N; i++) {
-        elements[i] = (*current);
-		current++;
-    }*/
-
-	initialStep();
-
-	firstStep();
-	secondStep();
-	thirdStep();
-	fourthStep();
-
-	finalStep();
-}
-
-/**
-*   Passo inicial do Simulador
-*   Guarda no arquivo Quantum algumas informações iniciais.
-*
-*   Parâmetros:
-*      NENHUM
-*
-*   Retorno:
-*      NENHUM
-*/
-void QuantumDistinctness::initialStep() {
-	//N = elements.size();
-
 	float exponent = (k) / (k + 1.0);
 	r = (int) pow(N, exponent);
-
+	
 	quantumFile.open(quantumFileName, ios::out);
 	quantumFile.setf(ios::fixed, ios::floatfield);
 	quantumFile.precision(2);
-	
-	cout.precision(10);
-	cout.setf(ios::fixed, ios::floatfield);
 
 	time = clock();
 
 	quantumFile << "Elements: [";
-	/*vector<int>::iterator current = elements.begin(),
-					          end = elements.end();
-	end--;
-	for (; current != end; current++)
-		quantumFile << (*current) << ", ";
-	quantumFile << (*end) << "]\n";*/
 	
-	for(int i=0; i<N-1;i++)
+	for(int i = 0; i < N-1; i++)
 		quantumFile << elements[i] << ", ";
 	quantumFile << elements[N-1] << "]\n";
 
@@ -161,15 +102,26 @@ void QuantumDistinctness::initialStep() {
 
 	quantumFile << "K: " << k << "\n";
 
-	quantumFile << "M: " << M << "\n";
+	//quantumFile << "M: " << M << "\n";
 
 	quantumFile << "\n\n";
+
+	firstStep();
+	secondStep();
+	thirdStep();
+	fourthStep();
+
+	end();
 }
 
 /*
-
-*/
-void QuantumDistinctness::finalStep() {
+ * End
+ *
+ * Última parte do simulador
+ * Calculo do tempo total do simulador
+ * Fechamento do arquivo
+ */
+void QuantumDistinctness::end() {
 	time = clock() - time;
 
 	quantumFile.precision(5);
@@ -178,55 +130,67 @@ void QuantumDistinctness::finalStep() {
 	quantumFile.close();
 }
 
-/**
-*   Primeiro passo do Simulador
-*   Primeiro passo do algoritmo 2.
-*
-*   Parâmetros:
-*      NENHUM
-*
-*   Retorno:
-*      NENHUM
-*/
+/*
+ * First Step
+ *
+ * Primeiro passo do Simulador
+ * Primeiro passo do algoritmo 2.
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::firstStep() {
-	root = (utils->combinatorial(N,r)) * (N - r);
+	root = (utils->combinatorial(N,r)) * (N - r); //O(n^2)
 
 	sub_sets_H();
 	sub_sets_H_Line();
 
-	quantumFile << "Step 1 (Algorithm 2: Single-solution algorithm)\n\n";
-	display_file_without_x_H();
+	quantumFile << "Step 1 (Algorithm 2: Single-solution algorithm)\n";
+	display_in_file_without_x_H();
 }
 
 /*
-
-*/
+ * Second Step
+ *
+ * Segundo passo do Simulador
+ * Segundo passo do algoritmo 2.
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::secondStep() {
-	quantumFile << "Step 2 (Algorithm 2: Single-solution algorithm)\n\n";
-	display_file_with_x_H();
+	quantumFile << "Step 2 (Algorithm 2: Single-solution algorithm)\n";
+	display_in_file_with_x_H();
 }
 
 /*
-
-*/
+ * Third Step
+ *
+ * Terceiro passo do Simulador
+ * Terceiro passo do algoritmo 2.
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::thirdStep() {
 	double base = N / r;
 	double exponent = k / 2;
 	int time1 = (int) pow(base, exponent);
+	int time2;
 
 	quantumFile << "Step 3 (Algorithm 2: Single-solution algorithm)\n";
-	quantumFile << "t1 = " << time1 << " times\n\n";
+	quantumFile << "Time1 = " << time1 << " time(s)\n\n";
 
-	for (int i = 1; i <= time1; i++) {
+	for(int i = 1; i <= time1; i++) {
 		thirdStepA();
 		quantumFile << "Step 3 - Time: " << i << " of " << time1 << "\n\n";
 		quantumFile << "Step 3 - A\n\n";
-		display_file_with_x_H();
+		display_in_file_with_x_H();
 
-		int time2 = (int) sqrt((double)r);
+		time2 = (int) sqrt((double)r);
 		quantumFile << "Step 3 - B\n";
-		quantumFile << "t2 = " << time2 << " times\n\n";
-		for (int j = 1; j <= time2; j++) {
+		quantumFile << "Time2 = " << time2 << " time(s)\n\n";
+		for(int j = 1; j <= time2; j++) {
 			quantumFile << "Step 3 - B - Time: " << j << " of " << time2 << "\n\n";
 			thirdStepB();
 		}
@@ -234,15 +198,21 @@ void QuantumDistinctness::thirdStep() {
 }
 
 /*
-
-*/
+ * Fourth Step
+ *
+ * Quarto passo do Simulador
+ * Quarto passo do algoritmo 2.
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::fourthStep() {
-	quantumFile << "Mostrando o resultado\n";
+	quantumFile << "Show the result\n";
 	quantumFile << "Step 4 (Algorithm 2: Single-solution algorithm)\n";
-	display_file_with_x_H();
+	display_in_file_with_x_H();
 
-	measure();
-	measure2();
+	deterministic_measurement();
+	probabilistic_measurement();
 }
 
 /*
@@ -278,7 +248,7 @@ void QuantumDistinctness::firstStepQuantumWalk() {
 		(*current).transformation_mapping(factor);
 
 	quantumFile << "Step 1 (Quantum Walk)\n\n";
-	display_file_with_x_H();
+	display_in_file_with_x_H();
 }
 
 /*
@@ -304,7 +274,7 @@ void QuantumDistinctness::secondStepQuantumWalk() {
 	}
 
 	quantumFile << "Step 2 (Quantum Walk)\n\n";
-	display_file_with_x_H_Line();
+	display_in_file_with_x_H_Line();
 }
 
 /*
@@ -325,7 +295,7 @@ void QuantumDistinctness::fourthStepQuantumWalk() {
 		(*current).transformation_mapping(factor);
 
 	quantumFile << "Step 4 (Quantum Walk)\n\n";
-	display_file_with_x_H_Line();
+	display_in_file_with_x_H_Line();
 }
 
 /*
@@ -359,13 +329,13 @@ void QuantumDistinctness::sixthStepQuantumWalk() {
 	}
 
 	quantumFile << "Step 6 (Quantum Walk)\n\n";
-	display_file_with_x_H();
+	display_in_file_with_x_H();
 }
 
 /*
 
 */
-void QuantumDistinctness::measure(){
+void QuantumDistinctness::deterministic_measurement(){
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
 	bool condition;
@@ -402,7 +372,7 @@ void QuantumDistinctness::measure(){
 
 }
 
-void QuantumDistinctness::measure2() {
+void QuantumDistinctness::probabilistic_measurement() {
     srand(std::time(0));
     int random = rand() % 101;
 	//int random = 109;
@@ -446,37 +416,57 @@ void QuantumDistinctness::measure2() {
 		}
 	}
 }
-/*
 
-*/
-void QuantumDistinctness::display_file_without_x_H() {
+/*
+ * Display In File Without X - Dimension H
+ *
+ * Mostra no Arquivo os estados sem o X
+ * |S>|y>
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
+void QuantumDistinctness::display_in_file_without_x_H() {
 	quantumFile << "|Phi> = (1 / sqrt(" << root << "))*\n[\n";
+
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
-	for (; current != end; current++)
+	for(; current != end; current++)
 		(*current).display_in_file_without_x(quantumFile);
 
 	quantumFile << "]\n\n\n";
 }
 
 /*
-
-*/
-void QuantumDistinctness::display_file_with_x_H() {
+ * Display In File With X - Dimension H
+ *
+ * Mostra no Arquivo os estados com o X
+ * |S>|x>|y>
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
+void QuantumDistinctness::display_in_file_with_x_H() {
 	quantumFile << "|Phi> = (1 / sqrt(" << root << "))*\n[\n";
 
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
-	for (; current != end; current++)
+	for(; current != end; current++)
 		(*current).display_in_file_with_x(quantumFile, elements);
 
 	quantumFile << "]\n\n\n";
 }
 
 /*
-
-*/
-void QuantumDistinctness::display_file_with_x_H_Line() {
+ * Display In File With X - Dimension H'
+ *
+ * Mostra no Arquivo os estados com o X
+ * |S>|x>|y>
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
+void QuantumDistinctness::display_in_file_with_x_H_Line() {
 	quantumFile << "|Phi> = (1 / sqrt(" << root << "))*\n[\n";
 
 	vector<State>::iterator current = statesDimensionHLine.begin(),
@@ -618,20 +608,29 @@ bool QuantumDistinctness::verifyCollision(set<int> S){
 	return false;
 }
 
+/*
+ * Menu
+ *
+ * Menu do Simulador
+ *
+ * Computational Complexity (Big-O Notation):
+ * O(1)
+ */
 void QuantumDistinctness::menu(){
 	char option;
 	string line;
-	cout << "Welcome to Quantum Distinctness Simulator\n" << endl;
-	cout << "Select Your Option\n";
+	cout << "Bem-Vindo ao Simulador de Distincao de Elementos\n" << endl;//cout << "Welcome to Quantum Distinctness Simulator\n" << endl;
+	cout << "Selecione sua Opcao\n";//cout << "Select Your Option\n";
 	cout << "1 - Definir Valores Aleatorios\n";
 	cout << "2 - Definir Valores\n";
-	cout << "0 - Exit\n";
-	cout << "\nOption: ";
+	cout << "0 - Sair\n";//cout << "0 - Exit\n";
+	cout << endl;
+	cout << "Opcao: ";//cout << "Option: ";
 	getline(cin, line);
 	cout << endl;
 	option = line.at(0);
 	if(line.length() != 1)
-		option = '0';
+		option = '9';
 
 	switch(option){
 		case '0':
@@ -639,14 +638,12 @@ void QuantumDistinctness::menu(){
 			break;
 		case '1':
 			randomList();
-			init();
 			break;
 		case '2':
 			userList();
-			init();
 			break;
 		default:
-			cout << "Invalid option!!!\n\n";
+			cout << "Opcao Invalida!!!\n\n";//cout << "Invalid option!!!\n\n";
 			cout << "Pressione qualquer tecla para continuar...";
 			system("pause > nul");
 			system("cls");
@@ -654,7 +651,16 @@ void QuantumDistinctness::menu(){
 	}
 }
 
-void QuantumDistinctness::randomList(){
+/*
+ * Random List
+ *
+ * Gera Lista Aleatória de Valores 
+ * o Usuário
+ *
+ * Computational Complexity (Big-O Notation):
+ * O(n)
+ */
+void QuantumDistinctness::randomList(){ //fazer proteções?
 	int lowerLimit, upperLimit;
 	cout << "Diga a quantidade de numeros: ";
 	cin >> N;
@@ -671,7 +677,15 @@ void QuantumDistinctness::randomList(){
 	cout << endl;
 }
 
-void QuantumDistinctness::userList(){
+/*
+ * User List
+ *
+ * Pega a Lista de Valores do Usuário
+ *
+ * Computational Complexity (Big-O Notation):
+ * O(n)
+ */
+void QuantumDistinctness::userList(){ //fazer proteções?
 	cout << "Diga a quantidade de numeros: ";
 	cin >> N;
 	elements = (int *) malloc(sizeof(int) * N);
