@@ -216,18 +216,32 @@ void QuantumDistinctness::fourthStep() {
 }
 
 /*
-
-*/
+ * Third Step A
+ *
+ * Terceiro passo do Simulador, parte A
+ * Terceiro passo do algoritmo 2, parte A
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::thirdStepA() {
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
-	for (; current != end; current++)
+	for(; current != end; current++)
 		(*current).search_equals_change_signal(elements, k);
 }
 
 /*
-
-*/
+ * Third Step B
+ *
+ * Terceiro passo do Simulador, parte B
+ * Terceiro passo do algoritmo 2, parte B
+ * Responsável pela chamada dos métodos 
+ * da Caminhada Quântica
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::thirdStepB() {
 	firstStepQuantumWalk();
 	secondStepQuantumWalk();
@@ -238,13 +252,19 @@ void QuantumDistinctness::thirdStepB() {
 }
 
 /*
-
-*/
+ * First Step Quantum Walk
+ *
+ * Primeiro passo da Caminhada Quântica
+ * Faz o mapeamento da transformação
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::firstStepQuantumWalk() {
 	float factor = (2.0 / ((float)N - (float)r));
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
-	for (; current != end; current++)
+	for(; current != end; current++)
 		(*current).transformation_mapping(factor);
 
 	quantumFile << "Step 1 (Quantum Walk)\n\n";
@@ -252,25 +272,34 @@ void QuantumDistinctness::firstStepQuantumWalk() {
 }
 
 /*
-
-*/
+ * Second Step Quantum Walk
+ *
+ * Segundo passo da Caminhada Quântica
+ * Faz a mudança do Estado de Hilbert 
+ * de H para H'
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::secondStepQuantumWalk() {
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
 	map<int, double>::iterator yCurrent, yEnd;
 	map<int, double> y;
 	set<int> s;
-	for (; current != end; current++) {
+	for(; current != end; current++) {
 		y = (*current).getY();
 		yCurrent = y.begin();
 		yEnd = y.end();
-		for (; yCurrent != yEnd; yCurrent++){
-			s = (*current).getS();//N
+		for(; yCurrent != yEnd; yCurrent++) {//O(n-r)
+			s = (*current).getS();//1
 			s.insert((*yCurrent).first);//log N
 			vector<int> v(s.begin(), s.end());//N
 			int posicao = utils->calculate_position(v, 0, N, r+1, 0);
 			statesDimensionHLine[posicao].change_amplitude((*yCurrent).first, (*yCurrent).second);
+			//s.clear();
 		}
+		//y.clear();
 	}
 
 	quantumFile << "Step 2 (Quantum Walk)\n\n";
@@ -278,15 +307,27 @@ void QuantumDistinctness::secondStepQuantumWalk() {
 }
 
 /*
-
-*/
+ * Third Step Quantum Walk
+ *
+ * Terceiro passo da Caminhada Quântica
+ * Imprime com Xy no lugar correspondente ao y
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::thirdStepQuantumWalk() {
 
 }
 
 /*
-
-*/
+ * Fourth Step Quantum Walk
+ *
+ * Quarto passo da Caminhada Quântica
+ * Faz o mapeamento da transformação
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::fourthStepQuantumWalk() {
 	float factor = (2.0 / ((float)r + 1));
 	vector<State>::iterator current = statesDimensionHLine.begin(),
@@ -299,15 +340,29 @@ void QuantumDistinctness::fourthStepQuantumWalk() {
 }
 
 /*
-
-*/
+ * Fifth Step Quantum Walk
+ *
+ * Quinto passo da Caminhada Quântica
+ * Apaga o elemento em X correspondente 
+ * ao novo y
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::fifthStepQuantumWalk() {
 
 }
 
 /*
-
-*/
+ * Sixth Step Quantum Walk
+ *
+ * Sexto passo da Caminhada Quântica
+ * Retorna de volta para o estado de 
+ * Hilbert H
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::sixthStepQuantumWalk() {
 	vector<State>::iterator current = statesDimensionHLine.begin(),
 								end = statesDimensionHLine.end();
@@ -333,8 +388,14 @@ void QuantumDistinctness::sixthStepQuantumWalk() {
 }
 
 /*
-
-*/
+ * Deterministic Measurement
+ *
+ * Medição determinística do estado
+ * Medição feita para efeitos de comparação
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::deterministic_measurement(){
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
@@ -372,6 +433,14 @@ void QuantumDistinctness::deterministic_measurement(){
 
 }
 
+/*
+ * Probabilistic Measurement
+ *
+ * Medição probabilística do estado
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::probabilistic_measurement() {
     srand(std::time(0));
     int random = rand() % 101;
@@ -477,9 +546,41 @@ void QuantumDistinctness::display_in_file_with_x_H_Line() {
 	quantumFile << "]\n\n\n";
 }
 
+//alterar para k>2
 /*
+ * Verify Collision
+ *
+ * Verifica o conjunto para ver quais são 
+ * as posições que possuem colisões
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
+bool QuantumDistinctness::verifyCollision(set<int> S){
+	set<int>::iterator current = S.begin(),
+		                   end = S.end(),
+					  auxiliar;
+	for (; current != end; current++) {
+		auxiliar = ++current;
+		current--;
+		for (; auxiliar != end; auxiliar++) {
+			if (elements[(*current) - 1] == elements[(*auxiliar) - 1]) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
-*/
+/*
+ * Sub Sets H
+ *
+ * Início para calcular os subconjuntos 
+ * no estado de Hilbert H
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::sub_sets_H() {
 	string before = "";
 	string after = "";
@@ -490,8 +591,14 @@ void QuantumDistinctness::sub_sets_H() {
 }
 
 /*
-
-*/
+ * Combination H
+ *
+ * Cálculo dos subconjuntos para o 
+ * estado de Hilbert H
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::combination_H(string before, string after,
 		int quantity) {
 	if (quantity == 0) {
@@ -543,8 +650,14 @@ void QuantumDistinctness::combination_H(string before, string after,
 }
 
 /*
-
-*/
+ * Sub Sets H Line
+ *
+ * Início para calcular os subconjuntos 
+ * no estado de Hilbert H'
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::sub_sets_H_Line() {
 	string before = "";
 	string after = "";
@@ -555,8 +668,14 @@ void QuantumDistinctness::sub_sets_H_Line() {
 }
 
 /*
-
-*/
+ * Combination H Line
+ *
+ * Cálculo dos subconjuntos para o 
+ * estado de Hilbert H'
+ *
+ * Computational Complexity (Big-O Notation):
+ * 
+ */
 void QuantumDistinctness::combination_H_Line(string before, string after,
 		int quantity) {
 	if (quantity == 0) {
@@ -589,23 +708,6 @@ void QuantumDistinctness::combination_H_Line(string before, string after,
 			}
 		}
 	}
-}
-
-//alterar para k>2
-bool QuantumDistinctness::verifyCollision(set<int> S){
-	set<int>::iterator current = S.begin(),
-		                   end = S.end(),
-					  auxiliar;
-	for (; current != end; current++) {
-		auxiliar = ++current;
-		current--;
-		for (; auxiliar != end; auxiliar++) {
-			if (elements[(*current) - 1] == elements[(*auxiliar) - 1]) {
-				return true;
-			}
-		}
-	}
-	return false;
 }
 
 /*

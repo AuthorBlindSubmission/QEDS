@@ -2,11 +2,9 @@ Elements: [1, 1, 2, 3]
 N: 4
 R: 2
 K: 2
-M: 0
 
 
 Step 1 (Algorithm 2: Single-solution algorithm)
-
 |Phi> = (1 / sqrt(12))*
 [
 	+1.00 |{1,2}>|3>
@@ -25,7 +23,6 @@ Step 1 (Algorithm 2: Single-solution algorithm)
 
 
 Step 2 (Algorithm 2: Single-solution algorithm)
-
 |Phi> = (1 / sqrt(12))*
 [
 	+1.00 |{1,2}>|1>|1>|3>
@@ -44,7 +41,7 @@ Step 2 (Algorithm 2: Single-solution algorithm)
 
 
 Step 3 (Algorithm 2: Single-solution algorithm)
-t1 = 2 times
+Time1 = 2 time(s)
 
 Step 3 - Time: 1 of 2
 
@@ -68,7 +65,7 @@ Step 3 - A
 
 
 Step 3 - B
-t2 = 1 times
+Time2 = 1 time(s)
 
 Step 3 - B - Time: 1 of 1
 
@@ -170,7 +167,7 @@ Step 3 - A
 
 
 Step 3 - B
-t2 = 1 times
+Time2 = 1 time(s)
 
 Step 3 - B - Time: 1 of 1
 
@@ -250,7 +247,7 @@ Step 6 (Quantum Walk)
 ]
 
 
-Mostrando o resultado
+Show the result
 Step 4 (Algorithm 2: Single-solution algorithm)
 |Phi> = (1 / sqrt(12))*
 [
@@ -275,4 +272,4 @@ There is a 2-collision
 Positions: 1 2 
 
 
-Time (secs): 0.04700
+Time (secs): 0.05100
