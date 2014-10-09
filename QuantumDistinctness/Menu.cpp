@@ -12,7 +12,7 @@ vector<int> usuario();
 vector<int> menu(char opcao);
 
 int main() {
-	char opcao = 'a';
+	/*char opcao = 'a';
 	printf("Bem-Vindo ao Simulador de Distinção de Elementos\n");
 	printf("Selecione sua opcao\n");
 	printf("1 - Selecionar Valores Aleatórios\n");
@@ -20,7 +20,7 @@ int main() {
 	printf("Opcao: ");
 	cin >> opcao;
 
-	vector<int> vector = menu(opcao);
+	vector<int> vector = menu(opcao);*/
 
 	/*do{
 		switch(opcao){
@@ -38,7 +38,7 @@ int main() {
 	vector = usuario();*/
 	
 	QuantumDistinctness quantum;
-	quantum.init(vector, (int) vector.size());
+	//quantum.init(vector, (int) vector.size());
 
 
 	//vector<int> vetor;
@@ -94,7 +94,7 @@ int main() {
 
 	delete utils;*/
 
-	system("pause");
+	//system("pause");
 
 	return 0;
 }

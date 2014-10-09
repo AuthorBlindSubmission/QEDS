@@ -1,8 +1,23 @@
 /*
- * QuantumDistinctness.h
+ * Simulador de Distinção de Elementos
  *
- *  Created on: 13/02/2014
- *      Author: Alexandre & Matheus
+ * File: QuantumDistinctness.h
+ *
+ * Created on: 13/02/2014
+ *    Authors: Alexandre Santiago de Abreu
+ *             Matheus Manzoli Ferreira
+ *
+ *      Email: alexandresantiago@id.uff.br
+ *             matheusmanzoli@gmail.com
+ *
+ * Trabalho de Monografia para a 
+ * Universidade Federal Fluminense.
+ * Instituto de Computação.
+ * Niterói, Rio de Janeiro, Brasil.
+ *
+ * Este arquivo contém as chamadas dos métodos
+ * da Classe QuantumDistinctness usadas no 
+ * Simulador de Distinção de Elementos.
  */
 
 #ifndef QUANTUMDISTINCTNESS_H_
@@ -16,11 +31,11 @@ public:
 	QuantumDistinctness();
 	virtual ~QuantumDistinctness();
 
-	void init(vector<int> _elements, int length);
+	void init();
 
 private:
 	//vector<int> elements;
-	int *elements2;
+	int *elements;
 	int N;
 	int r;
 	int k;
@@ -69,6 +84,10 @@ private:
 	void sub_sets_H_Line();
 	void combination_H(string before, string after, int quantity);
 	void combination_H_Line(string before, string after, int quantity);
+
+	void menu();
+	void randomList();
+	void userList();
 
 };
 

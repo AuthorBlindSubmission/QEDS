@@ -1,8 +1,23 @@
 /*
- * QuantumDistinctness.cpp
+ * Simulador de Distinção de Elementos
  *
- *  Created on: 13/02/2014
- *      Author: Alexandre & Matheus
+ * File: QuantumDistinctness.cpp
+ *
+ * Created on: 13/02/2014
+ *    Authors: Alexandre Santiago de Abreu
+ *             Matheus Manzoli Ferreira
+ *
+ *      Email: alexandresantiago@id.uff.br
+ *             matheusmanzoli@gmail.com
+ *
+ * Trabalho de Monografia para a 
+ * Universidade Federal Fluminense.
+ * Instituto de Computação.
+ * Niterói, Rio de Janeiro, Brasil.
+ *
+ * Este arquivo contém métodos da classe 
+ * QuantumDistinctness usadas no Simulador 
+ * de Distinção de Elementos.
  */
 
 #include "Library.h"
@@ -44,7 +59,9 @@ QuantumDistinctness::QuantumDistinctness() {
 
 	utils = new Utils;
 
-	elements2 = NULL;
+	elements = NULL;
+
+	menu();
 }
 
 /**
@@ -57,7 +74,8 @@ QuantumDistinctness::QuantumDistinctness() {
 *      NENHUM
 */
 QuantumDistinctness::~QuantumDistinctness() {
-	free(elements2);
+	if(elements != NULL)
+		free(elements);
 	delete utils;
 }
 
@@ -76,19 +94,19 @@ QuantumDistinctness::~QuantumDistinctness() {
 *   N -> tamanho da lista.
 *   r -> N^(2/3).
 */
-void QuantumDistinctness::init(vector<int> _elements, int length) {
+void QuantumDistinctness::init() {
 	//elements = _elements;
 	
-	N = length;
-    elements2 = (int *) malloc(sizeof(int) * (N));
+	//N = length;
+    //elements = (int *) malloc(sizeof(int) * (N));
 	
-    vector<int>::iterator current = _elements.begin(),
+    /*vector<int>::iterator current = _elements.begin(),
                               end = _elements.end();
     int a = 0;
 	for(int i=0; i < N; i++) {
-        elements2[i] = (*current);
+        elements[i] = (*current);
 		current++;
-    }
+    }*/
 
 	initialStep();
 
@@ -134,8 +152,8 @@ void QuantumDistinctness::initialStep() {
 	quantumFile << (*end) << "]\n";*/
 	
 	for(int i=0; i<N-1;i++)
-		quantumFile << elements2[i] << ", ";
-	quantumFile << elements2[N-1] << "]\n";
+		quantumFile << elements[i] << ", ";
+	quantumFile << elements[N-1] << "]\n";
 
 	quantumFile << "N: " << N << "\n";
 
@@ -234,7 +252,7 @@ void QuantumDistinctness::thirdStepA() {
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
 	for (; current != end; current++)
-		(*current).search_equals_change_signal(elements2, k);
+		(*current).search_equals_change_signal(elements, k);
 }
 
 /*
@@ -450,7 +468,7 @@ void QuantumDistinctness::display_file_with_x_H() {
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
 	for (; current != end; current++)
-		(*current).display_in_file_with_x(quantumFile, elements2);
+		(*current).display_in_file_with_x(quantumFile, elements);
 
 	quantumFile << "]\n\n\n";
 }
@@ -464,7 +482,7 @@ void QuantumDistinctness::display_file_with_x_H_Line() {
 	vector<State>::iterator current = statesDimensionHLine.begin(),
 							    end = statesDimensionHLine.end();
 	for (; current != end; current++)
-		(*current).display_in_file_with_x(quantumFile, elements2);
+		(*current).display_in_file_with_x(quantumFile, elements);
 
 	quantumFile << "]\n\n\n";
 }
@@ -592,10 +610,74 @@ bool QuantumDistinctness::verifyCollision(set<int> S){
 		auxiliar = ++current;
 		current--;
 		for (; auxiliar != end; auxiliar++) {
-			if (elements2[(*current) - 1] == elements2[(*auxiliar) - 1]) {
+			if (elements[(*current) - 1] == elements[(*auxiliar) - 1]) {
 				return true;
 			}
 		}
 	}
 	return false;
+}
+
+void QuantumDistinctness::menu(){
+	char option;
+	string line;
+	cout << "Welcome to Quantum Distinctness Simulator\n" << endl;
+	cout << "Select Your Option\n";
+	cout << "1 - Definir Valores Aleatorios\n";
+	cout << "2 - Definir Valores\n";
+	cout << "0 - Exit\n";
+	cout << "\nOption: ";
+	getline(cin, line);
+	cout << endl;
+	option = line.at(0);
+	if(line.length() != 1)
+		option = '0';
+
+	switch(option){
+		case '0':
+			exit(0);
+			break;
+		case '1':
+			randomList();
+			init();
+			break;
+		case '2':
+			userList();
+			init();
+			break;
+		default:
+			cout << "Invalid option!!!\n\n";
+			cout << "Pressione qualquer tecla para continuar...";
+			system("pause > nul");
+			system("cls");
+			menu();
+	}
+}
+
+void QuantumDistinctness::randomList(){
+	int lowerLimit, upperLimit;
+	cout << "Diga a quantidade de numeros: ";
+	cin >> N;
+	cout << "Diga o limite inferior: ";
+	cin >> lowerLimit;
+	cout << "Diga o limite superior: ";
+	cin >> upperLimit;
+
+	elements = (int *) malloc(sizeof(int) * N);
+	srand(std::time(NULL));
+	for(int i = 0; i < N; i++){
+		elements[i] = (rand() % (upperLimit - lowerLimit + 1)) + lowerLimit;
+	}
+	cout << endl;
+}
+
+void QuantumDistinctness::userList(){
+	cout << "Diga a quantidade de numeros: ";
+	cin >> N;
+	elements = (int *) malloc(sizeof(int) * N);
+	for(int i = 0; i < N; i++){
+		cout << "Diga o numero " << (i+1) << ": ";
+		cin >> elements[i];
+	}
+	cout << endl;
 }
