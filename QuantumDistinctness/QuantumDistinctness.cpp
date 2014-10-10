@@ -287,19 +287,20 @@ void QuantumDistinctness::secondStepQuantumWalk() {
 	map<int, double>::iterator yCurrent, yEnd;
 	map<int, double> y;
 	set<int> s;
+	int position;
 	for(; current != end; current++) {
 		y = (*current).getY();
 		yCurrent = y.begin();
 		yEnd = y.end();
-		for(; yCurrent != yEnd; yCurrent++) {//O(n-r)
-			s = (*current).getS();//1
-			s.insert((*yCurrent).first);//log N
-			vector<int> v(s.begin(), s.end());//N
-			int posicao = utils->calculate_position(v, 0, N, r+1, 0);
-			statesDimensionHLine[posicao].change_amplitude((*yCurrent).first, (*yCurrent).second);
-			//s.clear();
+		for(; yCurrent != yEnd; yCurrent++) { //O(n-r)
+			s = (*current).getS(); //O(1)
+			s.insert((*yCurrent).first); //O(log(r))
+			vector<int> v(s.begin(), s.end()); //O(r)
+			position = utils->calculate_position(v, 0, N, r+1, 0);
+			statesDimensionHLine[position].change_amplitude((*yCurrent).first, (*yCurrent).second); //O(log(n-r))
+			s.clear(); //O(r)
 		}
-		//y.clear();
+		y.clear(); //O(n-r)
 	}
 
 	quantumFile << "Step 2 (Quantum Walk)\n\n";
