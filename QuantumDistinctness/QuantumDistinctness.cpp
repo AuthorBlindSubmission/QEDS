@@ -370,18 +370,20 @@ void QuantumDistinctness::sixthStepQuantumWalk() {
 	map<int, double>::iterator yCurrent, yEnd;
 	map<int, double> y;
 	set<int> s;
-	for (; current != end; current++) {
+	int position;
+	for(; current != end; current++) {
 		y = (*current).getY();
 		yCurrent = y.begin();
 		yEnd = y.end();
-		for (; yCurrent != yEnd; yCurrent++){
-			s = (*current).getS();
-			set<int>::iterator it;
-			s.erase((*yCurrent).first);
-			vector<int> v(s.begin(), s.end());
-			int posicao = utils->calculate_position(v, 0, N, r, 0);
-			statesDimensionH[posicao].change_amplitude((*yCurrent).first, (*yCurrent).second);
+		for (; yCurrent != yEnd; yCurrent++){ //O(n-r)
+			s = (*current).getS(); //O(1)
+			s.erase((*yCurrent).first); //O(log(r))
+			vector<int> v(s.begin(), s.end()); //O(r)
+			position = utils->calculate_position(v, 0, N, r, 0);
+			statesDimensionH[position].change_amplitude((*yCurrent).first, (*yCurrent).second); //O(log(n-r))
+			s.clear(); //O(r)
 		}
+		y.clear(); //O(n-r)
 	}
 
 	quantumFile << "Step 6 (Quantum Walk)\n\n";
