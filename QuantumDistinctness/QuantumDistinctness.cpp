@@ -71,6 +71,9 @@ QuantumDistinctness::~QuantumDistinctness() {
 		free(elements);
 	
 	delete utils;
+
+	cout << "Press any key to continue...";
+	system("pause > nul");
 }
 
 /*
@@ -739,7 +742,9 @@ void QuantumDistinctness::menu(){
 
 	switch(option){
 		case '0':
-			exit(0);
+			cout << "Press any key to continue...";
+			system("pause > nul");
+			exit(EXIT_SUCCESS);
 			break;
 		case '1':
 			randomList();
