@@ -128,7 +128,7 @@ void QuantumDistinctness::end() {
 	time = clock() - time;
 
 	quantumFile.precision(5);
-	quantumFile << "\n\nTime (secs): " << ((float)time)/CLOCKS_PER_SEC;
+	quantumFile << "\nTime (secs): " << ((float)time)/CLOCKS_PER_SEC;
 
 	quantumFile.close();
 }
@@ -448,47 +448,41 @@ void QuantumDistinctness::deterministic_measurement(){ //O(E*n)
  * Computational Complexity (Big-O Notation):
  * 
  */
-void QuantumDistinctness::probabilistic_measurement() {
+void QuantumDistinctness::probabilistic_measurement() { //O(E*(n-r))
     srand(std::time(0));
     int random = rand() % 101;
-	//int random = 109;
-	cout << "\nRandom: " << random << endl;
     vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
     double cumulativeProbability = 0.0f;
 	int found = 0;
-	for (; current != end; current++){
-		//cout << "Probabilidade: " <<  cumulativeProbability;
-		cumulativeProbability = (*current).measurement(cumulativeProbability, (double)random, root, found);
+	for(; current != end; current++) { //O(E)
 
-		//if(cumulativeProbability > 0)
-			//cout << " " <<  cumulativeProbability << endl;
-		//else
-			//cout << " " << -cumulativeProbability << endl;
-		//if(cumulativeProbability == -1.0f){
-		//if(cumulativeProbability < 0){	
+		cumulativeProbability = (*current).measurement(cumulativeProbability, (double)random, root, found); //O(n-r)
+
 		if(found == 1){
 			stringstream answer;
+			answer << endl;
+			answer << "Probabilistic Measurement:" << endl;
+			answer << "Random: " << random << endl;
 
-			if(verifyCollision((*current).getS())){
-				cout << endl;
-				answer << "There is a " << k << "-collision\nPositions: ";
+			if(!verifyCollision((*current).getS())){
+				answer << "There is no simple "<< k << "-collision";
 			} else{
-				answer << "\nThere is no "<< k << "-collision\n\n";
+				answer << "There is a simple " << k << "-collision" << endl;
+				answer << "Positions: ";
+				set<int> s = (*current).getS();
+				set<int>::iterator currentS = s.begin(),
+								       endS = s.end();
+				for(; currentS != endS; currentS++) { //O(r)
+					answer << (*currentS) << " ";
+				}
 			}
-
-			set<int> S = (*current).getS();
-			set<int>::iterator currentS = S.begin(),
-								   endS = S.end();
-			for (; currentS != endS; currentS++){
-				answer << (*currentS) << " ";
-			}
+			
 			quantumFile << answer.str() << "\n";
-			cout << answer.str() << "\n\n";
+			cout << answer.str() << "\n";
 
-			//return; 
-			//cumulativeProbability*=-1;
-			found = 0;//return;
+			found = 0;
+			//return;
 		}
 	}
 }
