@@ -402,41 +402,42 @@ void QuantumDistinctness::sixthStepQuantumWalk() {
  * Computational Complexity (Big-O Notation):
  * 
  */
-void QuantumDistinctness::deterministic_measurement(){
+void QuantumDistinctness::deterministic_measurement(){ //O(E*n)
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
 	bool condition;
 	double amplitude, amplitudeCandidate = 0.0f;
 	set<int> sCandidate;
-	for (; current != end; current++){
-		condition = (*current).amplitudes_equals_of_y();
+	for(; current != end; current++) { //O(E)
+		condition = (*current).amplitudes_equals_of_y(); //O(n-r)
 		if(condition){
-			amplitude = (*current).getAmplitude();
+			amplitude = (*current).getAmplitude(); //O(1)
 			if(amplitude > amplitudeCandidate){
 				amplitudeCandidate = amplitude;
-				sCandidate = (*current).getS();
+				sCandidate.clear(); //O(n)
+				sCandidate = (*current).getS(); //O(r)
 			}else{
 				if(amplitude == amplitudeCandidate){
-					sCandidate = utils->set_intersection(sCandidate, (*current).getS());
+					sCandidate = utils->set_intersection(sCandidate, (*current).getS()); //O(n*log(r))
 				}
 			}
 		}
 	}
 
 	stringstream answer;
-	if(sCandidate.size() == 0)
-		answer << "There is no "<< k << "-collision";
+	answer << "\nDeterministic Measurement:" << endl;
+	if(sCandidate.size() == 0 || sCandidate.size() < k)
+		answer << "There is no simple "<< k << "-collision";
 	else{
-		answer << "There is a " << k << "-collision\nPositions: ";
+		answer << "There is a simple " << k << "-collision" << endl;
+		answer << "Positions: ";
 		set<int>::iterator currentS = sCandidate.begin(),
 							   endS = sCandidate.end();
-		for (; currentS != endS; currentS++){
+		for(; currentS != endS; currentS++) //O(n)
 			answer << (*currentS) << " ";
-		}
 	}
 	quantumFile << answer.str() << "\n";
 	cout << answer.str() << "\n";
-
 }
 
 /*
