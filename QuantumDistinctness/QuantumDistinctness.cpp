@@ -42,7 +42,7 @@ QuantumDistinctness::QuantumDistinctness() {
 
 	r = 0; //r>= k
 
-	k = 2;
+	k = 3;
 
 	M = 0;
 
@@ -555,20 +555,24 @@ void QuantumDistinctness::display_in_file_with_x_H_Line() {
  * as posições que possuem colisões
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(r^2)
  */
-bool QuantumDistinctness::verifyCollision(set<int> S){
+bool QuantumDistinctness::verifyCollision(set<int> S){ //O(r^2)
 	set<int>::iterator current = S.begin(),
 		                   end = S.end(),
 					  auxiliar;
-	for (; current != end; current++) {
+	int count = 0;
+	for(; current != end; current++) { //O(r)
 		auxiliar = ++current;
 		current--;
-		for (; auxiliar != end; auxiliar++) {
-			if (elements[(*current) - 1] == elements[(*auxiliar) - 1]) {
-				return true;
+		for(; auxiliar != end; auxiliar++) { //O(r)
+			if(elements[(*current) - 1] == elements[(*auxiliar) - 1]) {
+				count++;
 			}
 		}
+		if(count == (k-1))
+			return true;
+		count = 0;
 	}
 	return false;
 }

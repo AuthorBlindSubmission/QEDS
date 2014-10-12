@@ -261,7 +261,7 @@ double State::measurement(double cumulativeProbability, double random, unsigned 
 
 		maximumCumulativeProbability = cumulativeProbability + probability;
         
-		//cout << "Probability: " << cumulativeProbability << " - " << maximumCumulativeProbability;
+		//cout << "Probability: " << cumulativeProbability << " - " << maximumCumulativeProbability << endl;
 
         if((random >= cumulativeProbability) && (random < maximumCumulativeProbability)) {
 			found = 1;
