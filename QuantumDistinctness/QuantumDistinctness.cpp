@@ -42,7 +42,7 @@ QuantumDistinctness::QuantumDistinctness() {
 
 	r = 0; //r>= k
 
-	k = 3;
+	k = 2;
 
 	M = 0;
 
@@ -72,7 +72,7 @@ QuantumDistinctness::~QuantumDistinctness() {
 	
 	delete utils;
 
-	cout << "Press any key to continue...";
+	cout << "\nPress any key to continue...";
 	system("pause > nul");
 }
 
