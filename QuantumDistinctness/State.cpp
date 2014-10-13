@@ -42,47 +42,35 @@ State::~State() {
  *
  * Parâmetros:
  * elements = elementos a serem inseridos no S
+ * length = tamanhos dos elementos a serem 
+ * inseridos no S
  *
  * Computational Complexity (Big-O Notation):
  * Árvore Rubro-Negra
  * O(r*log(r))
  */
-void State::insert_in_S(string elements) {
-    for(int position = 0; position < (int)elements.size(); position++) //O(r)
-        S.insert((int) (elements[position] - '0')); //O(log(r))
+void State::insert_in_S(int *elements, int length){
+	for(int position = 0; position < length; position++) //O(r)
+		S.insert(elements[position]); //O(log(r))
 }
 
 /*
- * Insert In y
+ * Insert In Y
  *
- * Inserção de valores em y
+ * Inserção de valores em Y
  *
  * Parâmetros:
- * elements = elementos a serem inseridos no y
+ * elements = elementos a serem inseridos no Y
+ * length = tamanhos dos elementos a serem 
+ * inseridos no Y
  *
  * Computational Complexity (Big-O Notation):
  * Árvore Rubro-Negra
  * O((n-r)*log(n-r))
  */
-void State::insert_in_y(string elements) {
-    for(int position = 0; position < (int)elements.size(); position++) //O(n-r)
-        y.insert(pair<int, double>((int) (elements[position] - '0'), 1.0)); //O(log(n-r))
-}
-
-/*
- * Insert In y
- *
- * Inserção de valor em y
- *
- * Parâmetros:
- * elements = elemento a ser inserido no y
- *
- * Computational Complexity (Big-O Notation):
- * Árvore Rubro-Negra
- * O(log(n-r))
- */
-void State::insert_in_y(int element) {
-    y.insert(pair<int, double>(element, 1.0)); //O(log(n-r)
+void State::insert_in_y(int *elements, int length){
+	for(int position = 0; position < length; position++) //O(n-r)
+		y.insert(pair<int, double>(elements[position], 1.0)); //O(log(n-r))
 }
 
 /*

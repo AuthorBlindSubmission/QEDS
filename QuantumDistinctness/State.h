@@ -31,9 +31,8 @@ public:
     State();
     virtual ~State();
 
-    void insert_in_S(string elements);
-    void insert_in_y(string elements);
-    void insert_in_y(int element);
+	void insert_in_S(int *elements, int length);
+    void insert_in_y(int *elements, int length);
 
     void display_in_file_without_x(ofstream& quantumFile);
 	void display_in_file_with_x(ofstream& quantumFile, int *elements);

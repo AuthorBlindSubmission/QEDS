@@ -77,10 +77,7 @@ private:
 	void display_in_file_with_x_H();
 	void display_in_file_with_x_H_Line();
 
-	void sub_sets_H();
-	void sub_sets_H_Line();
-	void combination_H(string before, string after, int quantity);
-	void combination_H_Line(string before, string after, int quantity);
+	void sub_sets();
 
 	void menu();
 	void randomList();

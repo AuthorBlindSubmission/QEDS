@@ -89,7 +89,7 @@ void QuantumDistinctness::init() {
 	
 	quantumFile.open(quantumFileName, ios::out);
 	quantumFile.setf(ios::fixed, ios::floatfield);
-	quantumFile.precision(2);
+	quantumFile.precision(20);
 
 	time = clock();
 
@@ -145,8 +145,7 @@ void QuantumDistinctness::end() {
 void QuantumDistinctness::firstStep() {
 	root = (utils->combinatorial(N,r)) * (N - r); //O(n^2)
 
-	sub_sets_H();
-	sub_sets_H_Line();
+	sub_sets();
 
 	quantumFile << "Step 1 (Algorithm 2: Single-solution algorithm)\n";
 	display_in_file_without_x_H();
@@ -578,141 +577,55 @@ bool QuantumDistinctness::verifyCollision(set<int> S){ //O(r^2)
 }
 
 /*
- * Sub Sets H
+ * Sub Sets
  *
- * Início para calcular os subconjuntos 
- * no estado de Hilbert H
- *
- * Computational Complexity (Big-O Notation):
- * 
- */
-void QuantumDistinctness::sub_sets_H() {
-	string before = "";
-	string after = "";
-	for (int value = 1; value <= N; value++)
-		after += (char) (((int) '0') + value);
-
-	combination_H(before, after, r);
-}
-
-/*
- * Combination H
- *
- * Cálculo dos subconjuntos para o 
- * estado de Hilbert H
+ * Cálculo dos SubConjuntos
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(2^n)
  */
-void QuantumDistinctness::combination_H(string before, string after,
-		int quantity) {
-	if (quantity == 0) {
-		State newState;
-		newState.insert_in_S(before);
-
-		int positionBefore = 0;
-		int value;
-		int candidate;
-		for (candidate = 1; candidate <= N; candidate++) {
-			if (positionBefore == (int) before.size())
-				break;
-
-			value = (int) (before[positionBefore] - '0');
-
-			if (value == candidate)
-				positionBefore++;
-			else
-				newState.insert_in_y(candidate);
-		}
-
-		for (; candidate <= N; candidate++)
-			newState.insert_in_y(candidate);
-
-		statesDimensionH.push_back(newState);
-
-	} else {
-		int length = after.size();
-		for (int position = 0; position < length; position++) {
-			string firstPart = after.substr(0, position);
-
-			string secondPart;
-			stringstream secondPartAuxiliar;
-			char secondPartChar = after.at(position);
-			secondPartAuxiliar << secondPartChar;
-			secondPartAuxiliar >> secondPart;
-
-			bool condition = true;
-			if (!firstPart.find(secondPart) != std::string::npos)
-				condition = false;
-
-			if (!condition) {
-				string newBefore = before + after[position];
-				string newAfter = after.substr(position + 1, after.size());
-				combination_H(newBefore, newAfter, quantity - 1);
+void QuantumDistinctness::sub_sets(){
+	int *elementsH = (int *) malloc(sizeof(int) * r);
+	int *elementsHLine = (int *) malloc(sizeof(int) * (r+1));
+	int *elementsY = (int *) malloc(sizeof(int) * (N-r));
+	int lengthH, lengthHLine, lengthY;
+	
+	for(int i = (1 << N) - 1; i >= 0; i--) { //O(2^n)
+		lengthH = 0;
+		lengthHLine = 0;
+		lengthY = 0;
+		for(int j = (N - 1); j >= 0; j--) { //O(n)
+			if((i & (1 << j)) != 0) {
+				if(lengthH <= r)
+					elementsH[lengthH++] = (N-j);
+				if(lengthHLine <= (r+1))
+					elementsHLine[lengthHLine++] = (N-j);
+			}else{
+				if(lengthY <= (N-r))
+					elementsY[lengthY++] = (N-j);
 			}
 		}
+
+		if(lengthH == r){
+			State newState;
+			newState.insert_in_S(elementsH, lengthH);
+			newState.insert_in_y(elementsY, lengthY);
+			statesDimensionH.push_back(newState);
+		}
+		if(lengthHLine == (r+1)){
+			State newState;
+			newState.insert_in_S(elementsHLine, lengthHLine);
+			newState.insert_in_y(elementsHLine, lengthHLine);
+			statesDimensionHLine.push_back(newState);
+		}
+
 	}
-}
-
-/*
- * Sub Sets H Line
- *
- * Início para calcular os subconjuntos 
- * no estado de Hilbert H'
- *
- * Computational Complexity (Big-O Notation):
- * 
- */
-void QuantumDistinctness::sub_sets_H_Line() {
-	string before = "";
-	string after = "";
-	for (int value = 1; value <= N; value++)
-		after += (char) (((int) '0') + value);
-
-	combination_H_Line(before, after, r+1);
-}
-
-/*
- * Combination H Line
- *
- * Cálculo dos subconjuntos para o 
- * estado de Hilbert H'
- *
- * Computational Complexity (Big-O Notation):
- * 
- */
-void QuantumDistinctness::combination_H_Line(string before, string after,
-		int quantity) {
-	if (quantity == 0) {
-		State newState;
-		newState.insert_in_S(before);
-		newState.insert_in_y(before);
-
-		statesDimensionHLine.push_back(newState);
-
-	} else {
-		int length = after.size();
-		for (int position = 0; position < length; position++) {
-			string firstPart = after.substr(0, position);
-
-			string secondPart;
-			stringstream secondPartAuxiliar;
-			char secondPartChar = after.at(position);
-			secondPartAuxiliar << secondPartChar;
-			secondPartAuxiliar >> secondPart;
-
-			bool condition = true;
-			if (!firstPart.find(secondPart) != std::string::npos) {
-				condition = false;
-			}
-
-			if (!condition) {
-				string newBefore = before + after[position];
-				string newAfter = after.substr(position + 1, after.size());
-				combination_H_Line(newBefore, newAfter, quantity - 1);
-			}
-		}
-	}
+		/*printf("H: ");
+		mostra(elementsH, tamanhoH, r);
+		printf(" - L: ");
+		mostra(elementsHLine, tamanhoHLine, r+1);
+		printf(" - Y: ");
+		mostra(elementsY, tamanhoY, n-r);*/
 }
 
 /*
