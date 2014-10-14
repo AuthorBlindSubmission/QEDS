@@ -1,9 +1,9 @@
 /*
- * Simulador de Distinção de Elementos
+ * Element Distinctness Simulator
  *
  * File: QuantumDistinctness.cpp
  *
- * Created on: 13/02/2014
+ * Created on: 2014
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
@@ -12,8 +12,8 @@
  *
  * Trabalho de Monografia para a 
  * Universidade Federal Fluminense.
- * Instituto de Computação.
- * Niterói, Rio de Janeiro, Brasil.
+ * Institute of Computing.
+ * Niterói, Rio de Janeiro, Brazil.
  *
  * Este arquivo contém métodos da classe 
  * QuantumDistinctness usadas no Simulador 
@@ -27,17 +27,17 @@
  *
  * Inicialização de todas as variáveis
  *
- * Parâmetros:
- * elements = lista de valores para achar a distinção
+ * Parameters:
+ * elements = lista de valores para achar a distinção.
  * minimum = tamanho mínimo da lista.
  * maximum = tamanho máximo da lista.
- * N = tamanho da lista, definida posteriormente
- * r = N^(2/3), definida posteriormente
+ * N = tamanho da lista, definida posteriormente.
+ * r = N^(2/3), definida posteriormente.
  * k = quantidade de números distintos que a lista deve possuir.
  * root = valor para o calculo da amplitude.
  * quantumName = nome do arquivo em que será guardado todos os passos do algoritmo
  */
-QuantumDistinctness::QuantumDistinctness() {
+QuantumDistinctness::QuantumDistinctness() { //O(2^n)
 	N = 0;
 
 	r = 0; //r>= k
@@ -54,13 +54,13 @@ QuantumDistinctness::QuantumDistinctness() {
 
 	elements = NULL;
 
-	MINIMUM = 3; //faz r no minimo 2, satisfazendo r >= k
+	MINIMUM = 3; //N^(2/3) = r -> r >= k
 
-	MAXIMUM = 34;
+	MAXIMUM = 34; //fazer testes
 
 	menu();
 
-	init();
+	init(); //O(2^n)
 }
 
 /*
@@ -79,11 +79,11 @@ QuantumDistinctness::~QuantumDistinctness() {
 /*
  * Init
  *
- * Início do simulador
- * Cálculo de algumas das variáveis
- * Chama os passos do algoritmo
+ * Início do simulador.
+ * Cálculo de algumas das variáveis.
+ * Chama os passos do algoritmo.
  */
-void QuantumDistinctness::init() {
+void QuantumDistinctness::init() { //O(2^n)
 	float exponent = (k) / (k + 1.0);
 	r = (int) pow(N, exponent);
 	
@@ -95,7 +95,7 @@ void QuantumDistinctness::init() {
 
 	quantumFile << "Elements: [";
 	
-	for(int i = 0; i < N-1; i++)
+	for(int i = 0; i < N-1; i++) //O(n)
 		quantumFile << elements[i] << ", ";
 	quantumFile << elements[N-1] << "]\n";
 
@@ -109,10 +109,10 @@ void QuantumDistinctness::init() {
 
 	quantumFile << "\n\n";
 
-	firstStep();
-	secondStep();
-	thirdStep();
-	fourthStep();
+	firstStep(); //O(2^n)
+	secondStep(); //O(En)
+	thirdStep(); //O(P*(n^2))
+	fourthStep(); //O(En)
 
 	end();
 }
@@ -120,9 +120,9 @@ void QuantumDistinctness::init() {
 /*
  * End
  *
- * Última parte do simulador
- * Calculo do tempo total do simulador
- * Fechamento do arquivo
+ * Última parte do simulador.
+ * Calculo do tempo total do simulador.
+ * Fechamento do arquivo.
  */
 void QuantumDistinctness::end() {
 	time = clock() - time;
@@ -140,15 +140,15 @@ void QuantumDistinctness::end() {
  * Primeiro passo do algoritmo 2.
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(2^n)
  */
-void QuantumDistinctness::firstStep() {
+void QuantumDistinctness::firstStep() { //O(2^n)
 	root = (utils->combinatorial(N,r)) * (N - r); //O(n^2)
 
-	sub_sets();
+	sub_sets(); //O(2^n)
 
 	quantumFile << "Step 1 (Algorithm 2: Single-solution algorithm)\n";
-	display_in_file_without_x_H();
+	display_in_file_without_x_H(); //O(En)
 }
 
 /*
@@ -158,11 +158,11 @@ void QuantumDistinctness::firstStep() {
  * Segundo passo do algoritmo 2.
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(En)
  */
-void QuantumDistinctness::secondStep() {
+void QuantumDistinctness::secondStep() { //O(En)
 	quantumFile << "Step 2 (Algorithm 2: Single-solution algorithm)\n";
-	display_in_file_with_x_H();
+	display_in_file_with_x_H(); //O(En)
 }
 
 /*
@@ -172,9 +172,9 @@ void QuantumDistinctness::secondStep() {
  * Terceiro passo do algoritmo 2.
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(P*(n^2))
  */
-void QuantumDistinctness::thirdStep() {
+void QuantumDistinctness::thirdStep() { //O(P*(n^2))
 	double base = N / r;
 	double exponent = k / 2;
 	int time1 = (int) pow(base, exponent);
@@ -187,14 +187,14 @@ void QuantumDistinctness::thirdStep() {
 		thirdStepA();
 		quantumFile << "Step 3 - Time: " << i << " of " << time1 << "\n\n";
 		quantumFile << "Step 3 - A\n\n";
-		display_in_file_with_x_H();
+		display_in_file_with_x_H(); //O(En)
 
 		time2 = (int) sqrt((double)r);
 		quantumFile << "Step 3 - B\n";
 		quantumFile << "Time2 = " << time2 << " time(s)\n\n";
 		for(int j = 1; j <= time2; j++) {
 			quantumFile << "Step 3 - B - Time: " << j << " of " << time2 << "\n\n";
-			thirdStepB();
+			thirdStepB(); //O(P*(n^2))
 		}
 	}
 }
@@ -206,15 +206,15 @@ void QuantumDistinctness::thirdStep() {
  * Quarto passo do algoritmo 2.
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(En)
  */
-void QuantumDistinctness::fourthStep() {
+void QuantumDistinctness::fourthStep() { //O(En)
 	quantumFile << "Show the result\n";
 	quantumFile << "Step 4 (Algorithm 2: Single-solution algorithm)\n";
-	display_in_file_with_x_H();
+	display_in_file_with_x_H(); //O(En)
 
-	deterministic_measurement();
-	probabilistic_measurement();
+	deterministic_measurement(); //O(En)
+	probabilistic_measurement(); //O(En)
 }
 
 /*
@@ -224,13 +224,13 @@ void QuantumDistinctness::fourthStep() {
  * Terceiro passo do algoritmo 2, parte A
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(Ern)
  */
-void QuantumDistinctness::thirdStepA() {
+void QuantumDistinctness::thirdStepA() { //O(Ern)
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
-	for(; current != end; current++)
-		(*current).search_equals_change_signal(elements, k);
+	for(; current != end; current++) //O(E)
+		(*current).search_equals_change_signal(elements, k); //O(rn)
 }
 
 /*
@@ -242,15 +242,15 @@ void QuantumDistinctness::thirdStepA() {
  * da Caminhada Quântica
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(P*(n^2))
  */
-void QuantumDistinctness::thirdStepB() {
-	firstStepQuantumWalk();
-	secondStepQuantumWalk();
+void QuantumDistinctness::thirdStepB() { //O(P*(n^2))
+	firstStepQuantumWalk(); //O(E*(n^2))
+	secondStepQuantumWalk(); //O(En)
 	thirdStepQuantumWalk();
-	fourthStepQuantumWalk();
+	fourthStepQuantumWalk(); //O(P*(n^2))
 	fifthStepQuantumWalk();
-	sixthStepQuantumWalk();
+	sixthStepQuantumWalk(); //O(Pn)
 }
 
 /*
@@ -260,17 +260,17 @@ void QuantumDistinctness::thirdStepB() {
  * Faz o mapeamento da transformação
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(E*(n^2))
  */
-void QuantumDistinctness::firstStepQuantumWalk() {
+void QuantumDistinctness::firstStepQuantumWalk() { //O(E*(n^2))
 	float factor = (2.0 / ((float)N - (float)r));
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
-	for(; current != end; current++)
-		(*current).transformation_mapping(factor);
+	for(; current != end; current++) //O(E)
+		(*current).transformation_mapping(factor); //O(n^2)
 
 	quantumFile << "Step 1 (Quantum Walk)\n\n";
-	display_in_file_with_x_H();
+	display_in_file_with_x_H(); //O(En)
 }
 
 /*
@@ -281,17 +281,17 @@ void QuantumDistinctness::firstStepQuantumWalk() {
  * de H para H'
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(En)
  */
-void QuantumDistinctness::secondStepQuantumWalk() {
+void QuantumDistinctness::secondStepQuantumWalk() { //O(En)
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
 	map<int, double>::iterator yCurrent, yEnd;
 	map<int, double> y;
 	set<int> s;
 	int position;
-	for(; current != end; current++) {
-		y = (*current).getY();
+	for(; current != end; current++) { //O(E)
+		y = (*current).getY(); //O(n-r)
 		yCurrent = y.begin();
 		yEnd = y.end();
 		for(; yCurrent != yEnd; yCurrent++) { //O(n-r)
@@ -306,7 +306,7 @@ void QuantumDistinctness::secondStepQuantumWalk() {
 	}
 
 	quantumFile << "Step 2 (Quantum Walk)\n\n";
-	display_in_file_with_x_H_Line();
+	display_in_file_with_x_H_Line(); //O(En)
 }
 
 /*
@@ -329,17 +329,17 @@ void QuantumDistinctness::thirdStepQuantumWalk() {
  * Faz o mapeamento da transformação
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(P*(n^2))
  */
-void QuantumDistinctness::fourthStepQuantumWalk() {
+void QuantumDistinctness::fourthStepQuantumWalk() { //O(P*(n^2))
 	float factor = (2.0 / ((float)r + 1));
 	vector<State>::iterator current = statesDimensionHLine.begin(),
 								end = statesDimensionHLine.end();
-	for (; current != end; current++)
-		(*current).transformation_mapping(factor);
+	for(; current != end; current++) //O(P)
+		(*current).transformation_mapping(factor); //O(n^2)
 
 	quantumFile << "Step 4 (Quantum Walk)\n\n";
-	display_in_file_with_x_H_Line();
+	display_in_file_with_x_H_Line(); //O(Pn)
 }
 
 /*
@@ -364,21 +364,21 @@ void QuantumDistinctness::fifthStepQuantumWalk() {
  * Hilbert H
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(Pn)
  */
-void QuantumDistinctness::sixthStepQuantumWalk() {
+void QuantumDistinctness::sixthStepQuantumWalk() { //O(Pn)
 	vector<State>::iterator current = statesDimensionHLine.begin(),
 								end = statesDimensionHLine.end();
 	map<int, double>::iterator yCurrent, yEnd;
 	map<int, double> y;
 	set<int> s;
 	int position;
-	for(; current != end; current++) {
-		y = (*current).getY();
+	for(; current != end; current++) { //O(P)
+		y = (*current).getY(); //O(n-r)
 		yCurrent = y.begin();
 		yEnd = y.end();
-		for (; yCurrent != yEnd; yCurrent++){ //O(n-r)
-			s = (*current).getS(); //O(1)
+		for(; yCurrent != yEnd; yCurrent++) { //O(n-r)
+			s = (*current).getS(); //O(r)
 			s.erase((*yCurrent).first); //O(log(r))
 			vector<int> v(s.begin(), s.end()); //O(r)
 			position = utils->calculate_position(v, 0, N, r, 0);
@@ -389,7 +389,7 @@ void QuantumDistinctness::sixthStepQuantumWalk() {
 	}
 
 	quantumFile << "Step 6 (Quantum Walk)\n\n";
-	display_in_file_with_x_H();
+	display_in_file_with_x_H(); //O(En)
 }
 
 /*
@@ -399,9 +399,9 @@ void QuantumDistinctness::sixthStepQuantumWalk() {
  * Medição feita para efeitos de comparação
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(En)
  */
-void QuantumDistinctness::deterministic_measurement(){ //O(E*n)
+void QuantumDistinctness::deterministic_measurement(){ //O(En)
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
 	bool condition;
@@ -417,7 +417,7 @@ void QuantumDistinctness::deterministic_measurement(){ //O(E*n)
 				sCandidate = (*current).getS(); //O(r)
 			}else{
 				if(amplitude == amplitudeCandidate){
-					sCandidate = utils->set_intersection(sCandidate, (*current).getS()); //O(n*log(r))
+					sCandidate = utils->set_intersection(sCandidate, (*current).getS()); //O(r*log(r))
 				}
 			}
 		}
@@ -432,7 +432,7 @@ void QuantumDistinctness::deterministic_measurement(){ //O(E*n)
 		answer << "Positions: ";
 		set<int>::iterator currentS = sCandidate.begin(),
 							   endS = sCandidate.end();
-		for(; currentS != endS; currentS++) //O(n)
+		for(; currentS != endS; currentS++) //O(r)
 			answer << (*currentS) << " ";
 	}
 	quantumFile << answer.str() << "\n";
@@ -445,9 +445,9 @@ void QuantumDistinctness::deterministic_measurement(){ //O(E*n)
  * Medição probabilística do estado
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(En)
  */
-void QuantumDistinctness::probabilistic_measurement() { //O(E*(n-r))
+void QuantumDistinctness::probabilistic_measurement() { //O(En)
     srand(std::time(0));
     int random = rand() % 101;
     vector<State>::iterator current = statesDimensionH.begin(),
@@ -493,15 +493,15 @@ void QuantumDistinctness::probabilistic_measurement() { //O(E*(n-r))
  * |S>|y>
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(En)
  */
 void QuantumDistinctness::display_in_file_without_x_H() {
 	quantumFile << "|Phi> = (1 / sqrt(" << root << "))*\n[\n";
 
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
-	for(; current != end; current++)
-		(*current).display_in_file_without_x(quantumFile);
+	for(; current != end; current++) //O(E)
+		(*current).display_in_file_without_x(quantumFile); //O(n-r)
 
 	quantumFile << "]\n\n\n";
 }
@@ -513,15 +513,15 @@ void QuantumDistinctness::display_in_file_without_x_H() {
  * |S>|x>|y>
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(En)
  */
 void QuantumDistinctness::display_in_file_with_x_H() {
 	quantumFile << "|Phi> = (1 / sqrt(" << root << "))*\n[\n";
 
 	vector<State>::iterator current = statesDimensionH.begin(),
 							    end = statesDimensionH.end();
-	for(; current != end; current++)
-		(*current).display_in_file_with_x(quantumFile, elements);
+	for(; current != end; current++) //O(E)
+		(*current).display_in_file_with_x(quantumFile, elements); //O(n-r)
 
 	quantumFile << "]\n\n\n";
 }
@@ -533,20 +533,19 @@ void QuantumDistinctness::display_in_file_with_x_H() {
  * |S>|x>|y>
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(Pn)
  */
-void QuantumDistinctness::display_in_file_with_x_H_Line() {
+void QuantumDistinctness::display_in_file_with_x_H_Line() { //O(Pn)
 	quantumFile << "|Phi> = (1 / sqrt(" << root << "))*\n[\n";
 
 	vector<State>::iterator current = statesDimensionHLine.begin(),
 							    end = statesDimensionHLine.end();
-	for (; current != end; current++)
-		(*current).display_in_file_with_x(quantumFile, elements);
+	for(; current != end; current++) //O(P)
+		(*current).display_in_file_with_x(quantumFile, elements); //O(n-r)
 
 	quantumFile << "]\n\n\n";
 }
 
-//alterar para k>2
 /*
  * Verify Collision
  *
@@ -582,9 +581,9 @@ bool QuantumDistinctness::verifyCollision(set<int> S){ //O(r^2)
  * Cálculo dos SubConjuntos
  *
  * Computational Complexity (Big-O Notation):
- * O(2^n)
+ * O((2^n)*n*log(n-r)) -> O(2^n)
  */
-void QuantumDistinctness::sub_sets(){
+void QuantumDistinctness::sub_sets() { //O((2^n)*((n-r)*log(n-r))) -> O((2^n)*n*log(n-r))
 	int *elementsH = (int *) malloc(sizeof(int) * r);
 	int *elementsHLine = (int *) malloc(sizeof(int) * (r+1));
 	int *elementsY = (int *) malloc(sizeof(int) * (N-r));
@@ -608,24 +607,18 @@ void QuantumDistinctness::sub_sets(){
 
 		if(lengthH == r){
 			State newState;
-			newState.insert_in_S(elementsH, lengthH);
-			newState.insert_in_y(elementsY, lengthY);
+			newState.insert_in_S(elementsH, lengthH); //O(r*log(r))
+			newState.insert_in_y(elementsY, lengthY); //O((n-r)*log(n-r))
 			statesDimensionH.push_back(newState);
 		}
 		if(lengthHLine == (r+1)){
 			State newState;
-			newState.insert_in_S(elementsHLine, lengthHLine);
-			newState.insert_in_y(elementsHLine, lengthHLine);
+			newState.insert_in_S(elementsHLine, lengthHLine); //O(r*log(r))
+			newState.insert_in_y(elementsHLine, lengthHLine); //O((n-r)*log(n-r))
 			statesDimensionHLine.push_back(newState);
 		}
 
 	}
-		/*printf("H: ");
-		mostra(elementsH, tamanhoH, r);
-		printf(" - L: ");
-		mostra(elementsHLine, tamanhoHLine, r+1);
-		printf(" - Y: ");
-		mostra(elementsY, tamanhoY, n-r);*/
 }
 
 /*
@@ -693,9 +686,8 @@ void QuantumDistinctness::randomList(){ //fazer proteções?
 
 	elements = (int *) malloc(sizeof(int) * N);
 	srand(std::time(NULL));
-	for(int i = 0; i < N; i++){
+	for(int i = 0; i < N; i++) //O(n)
 		elements[i] = (rand() % (upperLimit - lowerLimit + 1)) + lowerLimit;
-	}
 	cout << endl;
 }
 
@@ -711,7 +703,7 @@ void QuantumDistinctness::userList(){ //fazer proteções?
 	cout << "Enter the number of values: ";
 	cin >> N;
 	elements = (int *) malloc(sizeof(int) * N);
-	for(int i = 0; i < N; i++){
+	for(int i = 0; i < N; i++) { //O(n)
 		cout << "Enter number " << (i+1) << ": ";
 		cin >> elements[i];
 	}

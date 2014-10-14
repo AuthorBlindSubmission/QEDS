@@ -1,9 +1,9 @@
 /*
- * Simulador de Distinção de Elementos
+ * Element Distinctness Simulator
  *
  * File: Utils.h
  *
- * Created on: 26/06/2014
+ * Created on: 2014
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
@@ -12,8 +12,8 @@
  *
  * Trabalho de Monografia para a 
  * Universidade Federal Fluminense.
- * Instituto de Computação.
- * Niterói, Rio de Janeiro, Brasil.
+ * Institute of Computing.
+ * Niterói, Rio de Janeiro, Brazil.
  *
  * Este arquivo contém as chamadas dos métodos
  * úteis usadas no Simulador de Distinção 

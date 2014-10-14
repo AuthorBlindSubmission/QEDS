@@ -1,9 +1,9 @@
 /*
- * Simulador de Distinção de Elementos
+ * Element Distinctness Simulator
  *
  * File: Utils.cpp
  *
- * Created on: 26/06/2014
+ * Created on: 2014
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
@@ -12,8 +12,8 @@
  *
  * Trabalho de Monografia para a 
  * Universidade Federal Fluminense.
- * Instituto de Computação.
- * Niterói, Rio de Janeiro, Brasil.
+ * Institute of Computing.
+ * Niterói, Rio de Janeiro, Brazil.
  *
  * Este arquivo contém métodos úteis usadas no
  * Simulador de Distinção de Elementos.
@@ -42,16 +42,16 @@ Utils::~Utils() {
  * http://www.brpreiss.com/books/opus5/html/img1869.gif
  *
  * Método que calcula o Coeficiente Binomial, utilizada 
- * na Combinação
+ * na Combinação.
  *
- * Parâmetros:
- * n = tamanho do conjunto
- * r = tamanho do subconjunto
+ * Parameters:
+ * n = tamanho do conjunto.
+ * r = tamanho do subconjunto.
  *
  * Computational Complexity (Big-O Notation):
  * O(n^2)
  */
-unsigned int Utils::combinatorial(int n, int r) {
+unsigned int Utils::combinatorial(int n, int r) { //O(n^2)
     if(n == 0)
         return 1;
 
@@ -79,12 +79,12 @@ unsigned int Utils::combinatorial(int n, int r) {
  * Calcula a nova posição para a mudança do estado de Hilbert H.
  * Calcula tanto a mudança de H para H', quanto o inverso.
  *
- * Parâmetros:
+ * Parameters:
  * S = 
- * initialPositionS = posição inicial do vetor S
- * N = tamanho total dos valores
- * r = tamanho do subconjunto
- * previousValueS = valor anterior a posição inicial do vetor S
+ * initialPositionS = posição inicial do vetor S.
+ * N = tamanho total dos valores.
+ * r = tamanho do subconjunto.
+ * previousValueS = valor anterior a posição inicial do vetor S.
  *
  * Computational Complexity (Big-O Notation):
  * O()
@@ -105,11 +105,11 @@ int Utils::calculate_position(vector<int> S, int initialPositionS, int n, int r,
 /*
  * Set Intersection
  *
- * Calcula a interseção de dois conjuntos
+ * Calcula a interseção de dois conjuntos.
  *
- * Parâmetros:
- * set1 = conjunto 1
- * set2 = conjunto 2
+ * Parameters:
+ * set1 = conjunto 1.
+ * set2 = conjunto 2.
  *
  * Computational Complexity (Big-O Notation):
  * s1 = tamanho de set1 ==>  s1 <= r
@@ -117,7 +117,7 @@ int Utils::calculate_position(vector<int> S, int initialPositionS, int n, int r,
  * O Set utiliza a árvore rubro-negra
  * O(r*log(r))
  */
-set<int> Utils::set_intersection(set<int> set1, set<int> set2) {
+set<int> Utils::set_intersection(set<int> set1, set<int> set2) { //O(r*log(r))
     set<int> result;
     set<int>::iterator current = set1.begin(),
                            end = set1.end();
