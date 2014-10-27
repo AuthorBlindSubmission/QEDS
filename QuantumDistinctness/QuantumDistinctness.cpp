@@ -38,9 +38,11 @@
  * quantumName = nome do arquivo em que será guardado todos os passos do algoritmo
  */
 QuantumDistinctness::QuantumDistinctness() { //O(2^n)
+	system("title Element Distinctness Simulator");
+
 	N = 0;
 
-	r = 0; //r>= k
+	r = 0;
 
 	k = 2;
 
@@ -54,7 +56,8 @@ QuantumDistinctness::QuantumDistinctness() { //O(2^n)
 
 	elements = NULL;
 
-	MINIMUM = 3; //N^(2/3) = r -> r >= k
+	/* N^(2/3) = r --> r >= k */
+	MINIMUM = ceil(pow(k, ((k + 1.0)/k)));
 
 	MAXIMUM = 34; //fazer testes
 
@@ -679,6 +682,24 @@ void QuantumDistinctness::randomList(){ //fazer proteções?
 	int lowerLimit, upperLimit;
 	cout << "Enter the number of values: ";
 	cin >> N;
+	if(N < MINIMUM){
+		cout << endl;
+		cout << "ERROR!! The minimum quantity of the list is " << MINIMUM << endl;
+		cout << endl;
+		cout << "Press any key to continue...";
+		system("pause > nul");
+		system("cls");
+		cout << "Welcome to Element Distinctness Simulator\n" << endl;
+		cout << "Select Your Option\n";
+		cout << "1 - Generate Random Values\n";
+		cout << "2 - Define My Own Values\n";
+		cout << "0 - Exit\n";
+		cout << endl;
+		cout << "Option: 1";
+		cout << endl << endl;
+		randomList();
+		return;
+	}
 	cout << "Enter the lower limit: ";
 	cin >> lowerLimit;
 	cout << "Enter the upper limit: ";
@@ -702,6 +723,24 @@ void QuantumDistinctness::randomList(){ //fazer proteções?
 void QuantumDistinctness::userList(){ //fazer proteções?
 	cout << "Enter the number of values: ";
 	cin >> N;
+	if(N < MINIMUM){
+		cout << endl;
+		cout << "ERROR!! The minimum quantity of the list is " << MINIMUM << endl;
+		cout << endl;
+		cout << "Press any key to continue...";
+		system("pause > nul");
+		system("cls");
+		cout << "Welcome to Element Distinctness Simulator\n" << endl;
+		cout << "Select Your Option\n";
+		cout << "1 - Generate Random Values\n";
+		cout << "2 - Define My Own Values\n";
+		cout << "0 - Exit\n";
+		cout << endl;
+		cout << "Option: 2";
+		cout << endl << endl;
+		userList();
+		return;
+	}
 	elements = (int *) malloc(sizeof(int) * N);
 	for(int i = 0; i < N; i++) { //O(n)
 		cout << "Enter number " << (i+1) << ": ";
