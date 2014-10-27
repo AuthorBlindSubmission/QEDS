@@ -322,7 +322,8 @@ void QuantumDistinctness::secondStepQuantumWalk() { //O(En)
  * 
  */
 void QuantumDistinctness::thirdStepQuantumWalk() {
-
+	quantumFile << "Step 3 (Quantum Walk)\n\n";
+	display_in_file_with_x_H_Line(); //O(En)
 }
 
 /*
