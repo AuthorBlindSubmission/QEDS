@@ -354,10 +354,11 @@ void QuantumDistinctness::fourthStepQuantumWalk() { //O(P*(n^2))
  * ao novo y
  *
  * Computational Complexity (Big-O Notation):
- * 
+ * O(Pnr)
  */
-void QuantumDistinctness::fifthStepQuantumWalk() {
-
+void QuantumDistinctness::fifthStepQuantumWalk() { //O(Pnr)
+	quantumFile << "Step 5 (Quantum Walk)\n\n";
+	display_in_file_with_x_H_Line_with_0(); //O(Pnr)
 }
 
 /*
