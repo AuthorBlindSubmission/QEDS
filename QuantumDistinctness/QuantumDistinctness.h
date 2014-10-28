@@ -76,6 +76,7 @@ private:
 	void display_in_file_without_x_H();
 	void display_in_file_with_x_H();
 	void display_in_file_with_x_H_Line();
+	void display_in_file_with_x_H_Line_with_0();
 
 	void sub_sets();
 

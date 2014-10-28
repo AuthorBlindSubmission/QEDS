@@ -247,11 +247,11 @@ void QuantumDistinctness::thirdStepA() { //O(Ern)
  * Computational Complexity (Big-O Notation):
  * O(P*(n^2))
  */
-void QuantumDistinctness::thirdStepB() { //O(P*(n^2))
-	firstStepQuantumWalk(); //O(E*(n^2))
-	secondStepQuantumWalk(); //O(En)
-	thirdStepQuantumWalk();
-	fourthStepQuantumWalk(); //O(P*(n^2))
+void QuantumDistinctness::thirdStepB() { //O(Pnn)
+	firstStepQuantumWalk(); //O(Enn)
+	secondStepQuantumWalk(); //O(Pnr)
+	thirdStepQuantumWalk(); //O(En)
+	fourthStepQuantumWalk(); //O(Pnn)
 	fifthStepQuantumWalk();
 	sixthStepQuantumWalk(); //O(Pn)
 }
@@ -284,9 +284,9 @@ void QuantumDistinctness::firstStepQuantumWalk() { //O(E*(n^2))
  * de H para H'
  *
  * Computational Complexity (Big-O Notation):
- * O(En)
+ * O(Pnr)
  */
-void QuantumDistinctness::secondStepQuantumWalk() { //O(En)
+void QuantumDistinctness::secondStepQuantumWalk() { //O(Pnr)
 	vector<State>::iterator current = statesDimensionH.begin(),
 								end = statesDimensionH.end();
 	map<int, double>::iterator yCurrent, yEnd;
@@ -309,7 +309,7 @@ void QuantumDistinctness::secondStepQuantumWalk() { //O(En)
 	}
 
 	quantumFile << "Step 2 (Quantum Walk)\n\n";
-	display_in_file_with_x_H_Line(); //O(En)
+	display_in_file_with_x_H_Line_with_0(); //O(Pnr)
 }
 
 /*
@@ -546,6 +546,26 @@ void QuantumDistinctness::display_in_file_with_x_H_Line() { //O(Pn)
 							    end = statesDimensionHLine.end();
 	for(; current != end; current++) //O(P)
 		(*current).display_in_file_with_x(quantumFile, elements); //O(n-r)
+
+	quantumFile << "]\n\n\n";
+}
+
+/*
+ * Display In File With X With 0 - Dimension H'
+ *
+ * Mostra no Arquivo os estados com o X
+ * com 0 no lugar do novo y no X |S>|x>|y>
+ *
+ * Computational Complexity (Big-O Notation):
+ * O(Pnr)
+ */
+void QuantumDistinctness::display_in_file_with_x_H_Line_with_0(){ //O(Pnr)
+	quantumFile << "|Phi> = (1 / sqrt(" << root << "))*\n[\n";
+	
+	vector<State>::iterator current = statesDimensionHLine.begin(),
+							    end = statesDimensionHLine.end();
+	for(; current != end; current++) //O(P)
+		(*current).display_in_file_with_x_with_0(quantumFile, elements); //O(nr)
 
 	quantumFile << "]\n\n\n";
 }

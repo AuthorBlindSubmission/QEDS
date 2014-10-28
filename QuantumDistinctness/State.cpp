@@ -155,6 +155,59 @@ void State::display_in_file_with_x(ofstream& quantumFile, int *elements) { //O(n
 }
 
 /*
+ * Display in File With X With 0
+ *
+ * Mostra no arquivo o estado com o estado X
+ * com 0 no lugar do novo y no X |S>|x>|y>
+ *
+ * Parameters:
+ * quantumFile = ponteiro do arquivo para 
+ * salvar as informações.
+ *
+ * Computational Complexity (Big-O Notation):
+ * O(nr)
+ */
+void State::display_in_file_with_x_with_0(ofstream& quantumFile, int *elements) { //O(nr)
+    set<int>::iterator currentS = S.begin(),
+                           endS = S.end();
+    endS--;
+    stringstream stateS, stateX;
+    stateS << "|{";
+    for(; currentS != endS; currentS++) //O(r)
+        stateS << (*currentS) << ",";
+    stateS << (*endS) << "}>";
+
+    map<int, double>::iterator currentY = y.begin(),
+                                   endY = y.end();
+    for(; currentY != endY; currentY++) { //O(n-r) -> (n-r) >= r
+		
+		currentS = S.begin();
+        endS = S.end();
+		for(; currentS != endS; currentS++) { //O(r)
+			if((*currentS) == (*currentY).first)
+				stateX << "|0>" ;
+			else
+				stateX << "|" << elements[(*currentS) - 1] << ">" ;
+		}
+		
+		quantumFile << "\t";
+
+        if((*currentY).second >= 0)
+            quantumFile << "+";
+
+        quantumFile << (*currentY).second << " ";
+
+        quantumFile << stateS.str();
+
+        quantumFile << stateX.str();
+
+        quantumFile << "|" << (*currentY).first << ">\n";
+
+		stateX.str(std::string()); //O(r)
+    }
+}
+
+/*
  * Search Equals Change Signal
  *
  * Procurar por k valores de X iguais e 

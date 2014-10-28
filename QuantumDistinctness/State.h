@@ -36,6 +36,7 @@ public:
 
     void display_in_file_without_x(ofstream& quantumFile);
 	void display_in_file_with_x(ofstream& quantumFile, int *elements);
+	void display_in_file_with_x_with_0(ofstream& quantumFile, int *elements);
 
 	void search_equals_change_signal(int *elements, int kDistinctness);
     void transformation_mapping(float factor);
