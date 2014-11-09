@@ -34,6 +34,7 @@
 #include <ctime>
 #include <string.h>
 #include <time.h>
+#include <algorithm> 
 
 
 /* State.cpp */

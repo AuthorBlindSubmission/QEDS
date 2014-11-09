@@ -57,7 +57,9 @@ QuantumDistinctness::QuantumDistinctness() { //O(2^n)
 	elements = NULL;
 
 	/* N^(2/3) = r --> r >= k */
-	MINIMUM = ceil(pow(k, ((k + 1.0)/k)));
+	/* Valor mínimo igual a 4, com 3 elementos o grafo seria
+	   uma árvore */
+	MINIMUM = utils->max_value(ceil(pow(k, ((k + 1.0)/k))), 4);
 
 	MAXIMUM = 34; //fazer testes
 

@@ -129,3 +129,19 @@ set<int> Utils::set_intersection(set<int> set1, set<int> set2) { //O(r*log(r))
 
     return result;
 }
+
+/*
+ * Max Value
+ *
+ * Calcula o valor máximo entre dois números
+ *
+ * Parameters:
+ * value1 = valor 1.
+ * value2 = valor 2.
+ *
+ * Computational Complexity (Big-O Notation):
+ * O(1)
+ */
+int Utils::max_value(int value1, int value2){ //O(1)
+	return (value1 > value2) ? value1 : value2;
+}

@@ -34,6 +34,7 @@ public:
 	unsigned int combinatorial(int n, int r);
 	int calculate_position(vector<int> S, int initialPositionS, int n, int r, int previousValueS);
 	set<int> set_intersection(set<int> set1, set<int> set2);
+	int max_value(int value1, int value2);
 
 private:
 	unsigned int *binomialCoefficients;
