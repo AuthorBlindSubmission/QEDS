@@ -1,5 +1,5 @@
 /*
- * Element Distinctness Simulator
+ * Quantum Element Distinctness Simulator
  *
  * File: QuantumDistinctness.h
  *
@@ -7,17 +7,20 @@
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
- *      Email: alexandresantiago@id.uff.br
+ *      Email: santiago@cos.ufrj.br
  *             matheusmanzoli@gmail.com
  *
- * Trabalho de Monografia para a 
+ * B.Sc. dissertation for the 
  * Universidade Federal Fluminense.
  * Institute of Computing.
  * Niterói, Rio de Janeiro, Brazil.
  *
- * Este arquivo contém as chamadas dos métodos
- * da Classe QuantumDistinctness usadas no 
- * Simulador de Distinção de Elementos.
+ * This file contains the methods of the class 
+ * QuantumDistinctness used by QEDS.
+ * In this simulator, we have fixed k = 2, i.e.,
+ * we are finding a 2-collision, or 2-distinctness.
+ *
+ * All descriptions of classes are in cpp file.
  */
 
 #ifndef QUANTUMDISTINCTNESS_H_

@@ -1,5 +1,5 @@
 /*
- * Element Distinctness Simulator
+ * Quantum Element Distinctness Simulator
  *
  * File: State.cpp
  *
@@ -7,29 +7,28 @@
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
- *      Email: alexandresantiago@id.uff.br
+ *      Email: santiago@cos.ufrj.br
  *             matheusmanzoli@gmail.com
  *
- * Trabalho de Monografia para a 
+ * B.Sc. dissertation for the 
  * Universidade Federal Fluminense.
  * Institute of Computing.
  * Niterói, Rio de Janeiro, Brazil.
  *
- * Este arquivo contém métodos da classe State
- * usadas no Simulador de Distinção de Elementos.
+ * This file contains the methods of State class.
  */
 
 #include "Library.h"
 
 /*
- * Construtor da Classe State
+ * Builder
  */
 State::State() {
 
 }
 
 /*
- * Destrutor da Classe State
+ * Destructor
  */
 State::~State() {
 
@@ -38,12 +37,10 @@ State::~State() {
 /*
  * Insert In S
  *
- * Inserção de valores em S.
  *
  * Parameters:
- * elements = elementos a serem inseridos no S.
- * length = tamanhos dos elementos a serem 
- * inseridos no S.
+ * elements = elements to be added in S.
+ * length = Elements' size.
  *
  * Computational Complexity (Big-O Notation):
  * O(r*log(r))
@@ -56,12 +53,10 @@ void State::insert_in_S(int *elements, int length) { //O(r*log(r))
 /*
  * Insert In Y
  *
- * Inserção de valores em Y
  *
  * Parameters:
- * elements = elementos a serem inseridos no Y.
- * length = tamanhos dos elementos a serem 
- * inseridos no Y.
+ * elements = elements to be added in Y.
+ * length = elements' size.
  *
  * Computational Complexity (Big-O Notation):
  * O((n-r)*log(n-r))
@@ -74,12 +69,11 @@ void State::insert_in_y(int *elements, int length) { //O((n-r)*log(n-r))
 /*
  * Display in File Without X
  *
- * Mostra no arquivo o estado sem o estado X
+ * Show in output file the state without X
  * |S>|y>
  *
  * Parameters:
- * quantumFile = ponteiro do arquivo para 
- * salvar as informações.
+ * quantumFile = files pointer to save informations.
  *
  * Computational Complexity (Big-O Notation):
  * O(n-r)
@@ -113,12 +107,11 @@ void State::display_in_file_without_x(ofstream& quantumFile) { //O(n-r)
 /*
  * Display in File With X
  *
- * Mostra no arquivo o estado com o estado X
+ * Shows in output file the state with X
  * |S>|x>|y>
  *
  * Parameters:
- * quantumFile = ponteiro do arquivo para 
- * salvar as informações.
+ * quantumFile = files pointer to save informations. 
  *
  * Computational Complexity (Big-O Notation):
  * O(n-r)
@@ -157,12 +150,10 @@ void State::display_in_file_with_x(ofstream& quantumFile, int *elements) { //O(n
 /*
  * Display in File With X With 0
  *
- * Mostra no arquivo o estado com o estado X
- * com 0 no lugar do novo y no X |S>|x>|y>
+ * S>|x>|0>
  *
  * Parameters:
- * quantumFile = ponteiro do arquivo para 
- * salvar as informações.
+ * quantumFile = files pointer to save informations.
  *
  * Computational Complexity (Big-O Notation):
  * O(nr)
@@ -210,12 +201,12 @@ void State::display_in_file_with_x_with_0(ofstream& quantumFile, int *elements) 
 /*
  * Search Equals Change Signal
  *
- * Procurar por k valores de X iguais e 
- * inverte a fase
+ * Search for k equal values of X and 
+ * change the phase.
  *
  * Parameters:
- * elements = lista com os elementos
- * kDistinctness = quantidade de números distintos
+ * elements = list of elements
+ * kDistinctness = number of distinct numbers
  *
  * Computational Complexity (Big-O Notation):
  * O(rn)
@@ -226,8 +217,7 @@ void State::search_equals_change_signal(int *elements, int kDistinctness) { //O(
                       auxiliarS;
     int count = 0;
     map<int, double>::iterator currentY, endY;
-    for(; currentS != endS; currentS++) { //O(r) //pode fazer melhor -kDistinctness
-		//não adianta verificar os dois ultimos, se K = 3
+    for(; currentS != endS; currentS++) { //O(r)
         auxiliarS = ++currentS;
         currentS--;
         for(; auxiliarS != endS; auxiliarS++) { //O(r)
@@ -249,11 +239,10 @@ void State::search_equals_change_signal(int *elements, int kDistinctness) { //O(
 /*
  * Transformation Mapping
  *
- * Muda a amplitude do estado de acordo 
- * com a caminhada quântica.
+ * Changes the state's amplitude.
  *
  * Parameters:
- * factor = novo fator para a troca da amplitude
+ * factor = new value to amplitude
  *
  * Computational Complexity (Big-O Notation):
  * O(n^2)
@@ -281,13 +270,12 @@ void State::transformation_mapping(float factor) { //O(n^2)
 /*
  * Measurement
  *
- * Medição do resultado
  *
  * Parameters:
- * cumulativeProbability = intervalo inferior da probabilidade.
- * random = probabilidade do estado ser o correto.
- * root = valor da amplitude "geral".
- * found = usado para ver se o estado é marcado como correto.
+ * cumulativeProbability = lower range of probability.
+ * random = randum value to get the interval for the measure.
+ * root = amplitude value.
+ * found = used to see if the state is the marked state.
  *
  * Computational Complexity (Big-O Notation):
  * O(n-r)
@@ -318,8 +306,7 @@ double State::measurement(double cumulativeProbability, double random, unsigned 
 /*
  * Amplitudes Equals of Y
  *
- * Verifica se os valores de y são iguais
- * para um mesmo |S>.
+ * Verify if the y values are equal to the same |S>
  *
  * Computational Complexity (Big-O Notation):
  * O(n-r)
@@ -339,8 +326,7 @@ bool State::amplitudes_equals_of_y() { //O(n-r)
 /*
  * Get Amplitude
  *
- * Retorna o valor da amplitude do primeiro
- * y de um dado |S>.
+ * Returns the first y value of a |S>
  *
  * Computational Complexity (Big-O Notation):
  * O(1)
@@ -353,12 +339,11 @@ double State::getAmplitude() { //O(1)
 /*
  * Change Amplitude
  *
- * Retorna o valor da amplitude do primeiro
- * y de um dado |S>.
+ * Returns the first y value of a |S>
  *
  * Parameters:
- * first = valor do y que terá sua amplitude alterada.
- * amplitude = nova amplitude.
+ * first = y value that will have its amplitude value changed.
+ * amplitude = new amplitude.
  *
  * Computational Complexity (Big-O Notation):
  * O(log(n-r))
@@ -370,7 +355,7 @@ void State::change_amplitude(int first, double amplitude) { //O(log(n-r))
 /*
  * Get Y
  *
- * Retorna os y de um dados S
+ * Returns the y values of a S
  *
  * Computational Complexity (Big-O Notation):
  * O(n-r)
@@ -382,7 +367,7 @@ map<int, double> State::getY() { //O(n-r)
 /*
  * Get S
  *
- * Retorna o S
+ * Returns S
  *
  * Computational Complexity (Big-O Notation):
  * O(r)

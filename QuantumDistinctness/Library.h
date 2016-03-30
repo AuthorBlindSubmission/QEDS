@@ -1,5 +1,5 @@
 /*
- * Element Distinctness Simulator
+ * Quantum Element Distinctness Simulator
  *
  * File: Library.h
  *
@@ -7,16 +7,16 @@
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
- *      Email: alexandresantiago@id.uff.br
+ *      Email: santiago@cos.ufrj.br
  *             matheusmanzoli@gmail.com
  *
- * Trabalho de Monografia para a 
+ * B.Sc. dissertation for the 
  * Universidade Federal Fluminense.
  * Institute of Computing.
  * Niterói, Rio de Janeiro, Brazil.
  *
- * Este arquivo contém as bibliotecas 
- * usadas em cada arquivo.
+ * This file contains the libraries 
+ * used by the other files.
  */
 
 /* QuantumDistinctness.cpp */

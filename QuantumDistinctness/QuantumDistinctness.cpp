@@ -1,5 +1,5 @@
 /*
- * Element Distinctness Simulator
+ * Quantum Element Distinctness Simulator
  *
  * File: QuantumDistinctness.cpp
  *
@@ -7,35 +7,38 @@
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
- *      Email: alexandresantiago@id.uff.br
+ *      Email: santiago@cos.ufrj.br
  *             matheusmanzoli@gmail.com
  *
- * Trabalho de Monografia para a 
+ * B.Sc. dissertation for the 
  * Universidade Federal Fluminense.
  * Institute of Computing.
  * Niterói, Rio de Janeiro, Brazil.
  *
- * Este arquivo contém métodos da classe 
- * QuantumDistinctness usadas no Simulador 
- * de Distinção de Elementos.
+ * This file contains the methods of the class 
+ * QuantumDistinctness used by QEDS.
+ * In this simulator, we have fixed k = 2, i.e.,
+ * we are finding a 2-collision, or 2-distinctness.
  */
 
 #include "Library.h"
 
 /*
- * Construtor do simulador
+ * Builder of the simulator
  *
- * Inicialização de todas as variáveis
+ * Initialization of all variables
  *
  * Parameters:
- * elements = lista de valores para achar a distinção.
- * minimum = tamanho mínimo da lista.
- * maximum = tamanho máximo da lista.
- * N = tamanho da lista, definida posteriormente.
- * r = N^(2/3), definida posteriormente.
- * k = quantidade de números distintos que a lista deve possuir.
- * root = valor para o calculo da amplitude.
- * quantumName = nome do arquivo em que será guardado todos os passos do algoritmo
+ * elements = List of values.
+ * minimum = Minimum list's size.
+ * maximum = Maximum list's size.
+ * N = List's size.
+ * r = N^(2/3).
+ * k = Number of elements distinctness in the list. 
+ * This value is fixed in 2.
+ * root = variable that is used for calculate the amplitude.
+ * quantumName = File's name where we save every step of Element
+ * Distinctness Algorithm.
  */
 QuantumDistinctness::QuantumDistinctness() { //O(2^n)
 	system("title Element Distinctness Simulator");
@@ -57,11 +60,11 @@ QuantumDistinctness::QuantumDistinctness() { //O(2^n)
 	elements = NULL;
 
 	/* N^(2/3) = r --> r >= k */
-	/* Valor mínimo igual a 4, com 3 elementos o grafo seria
-	   uma árvore */
+	/* Minimum value is 4. If we had 3 elements our graph would be a tree.*/
+
 	MINIMUM = utils->max_value(ceil(pow(k, ((k + 1.0)/k))), 4);
 
-	MAXIMUM = 34; //fazer testes
+	MAXIMUM = 34; // The maximum supported by the computer used in tests.
 
 	menu();
 
@@ -69,7 +72,7 @@ QuantumDistinctness::QuantumDistinctness() { //O(2^n)
 }
 
 /*
- * Destrutor do simulador
+ * Desctructor
  */
 QuantumDistinctness::~QuantumDistinctness() {
 	if(elements != NULL)
@@ -84,9 +87,9 @@ QuantumDistinctness::~QuantumDistinctness() {
 /*
  * Init
  *
- * Início do simulador.
- * Cálculo de algumas das variáveis.
- * Chama os passos do algoritmo.
+ * Init of simulator.
+ * Here we calculate some variables and call the steps of the algorithm.
+ * 
  */
 void QuantumDistinctness::init() { //O(2^n)
 	float exponent = (k) / (k + 1.0);
@@ -125,9 +128,9 @@ void QuantumDistinctness::init() { //O(2^n)
 /*
  * End
  *
- * Última parte do simulador.
- * Calculo do tempo total do simulador.
- * Fechamento do arquivo.
+ * The last part of simulator.
+ * We calculate the running time of the simulator.
+ * Here we close the file with the information of the simulation.
  */
 void QuantumDistinctness::end() {
 	time = clock() - time;
@@ -138,11 +141,13 @@ void QuantumDistinctness::end() {
 	quantumFile.close();
 }
 
+/*Here we start the quantum steps of algorithm*/
+
 /*
  * First Step
  *
- * Primeiro passo do Simulador
- * Primeiro passo do algoritmo 2.
+ * First step of simulator.
+ * First step of algorithm 2 (see Ambainis' paper for Element Distinctness).
  *
  * Computational Complexity (Big-O Notation):
  * O(2^n)
@@ -159,8 +164,8 @@ void QuantumDistinctness::firstStep() { //O(2^n)
 /*
  * Second Step
  *
- * Segundo passo do Simulador
- * Segundo passo do algoritmo 2.
+ * Second step of simulator.
+ * Second step of algorithm 2.
  *
  * Computational Complexity (Big-O Notation):
  * O(En)
@@ -173,8 +178,8 @@ void QuantumDistinctness::secondStep() { //O(En)
 /*
  * Third Step
  *
- * Terceiro passo do Simulador
- * Terceiro passo do algoritmo 2.
+ * Third step of simulator.
+ * Third step of algorithm 2.
  *
  * Computational Complexity (Big-O Notation):
  * O(P*(n^2))
@@ -207,8 +212,8 @@ void QuantumDistinctness::thirdStep() { //O(P*(n^2))
 /*
  * Fourth Step
  *
- * Quarto passo do Simulador
- * Quarto passo do algoritmo 2.
+ * Fourth step of simulator
+ * Fourth step of algorithm 2.
  *
  * Computational Complexity (Big-O Notation):
  * O(En)
@@ -225,8 +230,8 @@ void QuantumDistinctness::fourthStep() { //O(En)
 /*
  * Third Step A
  *
- * Terceiro passo do Simulador, parte A
- * Terceiro passo do algoritmo 2, parte A
+ * Third step of simulator, part A.
+ * Third step of algorithm 2, part A
  *
  * Computational Complexity (Big-O Notation):
  * O(Ern)
@@ -241,10 +246,9 @@ void QuantumDistinctness::thirdStepA() { //O(Ern)
 /*
  * Third Step B
  *
- * Terceiro passo do Simulador, parte B
- * Terceiro passo do algoritmo 2, parte B
- * Responsável pela chamada dos métodos 
- * da Caminhada Quântica
+ * Third step of simulator, part B
+ * Third step of algorithm 2, part B
+ * This part calls the quantum steps 
  *
  * Computational Complexity (Big-O Notation):
  * O(P*(n^2))
@@ -261,8 +265,7 @@ void QuantumDistinctness::thirdStepB() { //O(Pnn)
 /*
  * First Step Quantum Walk
  *
- * Primeiro passo da Caminhada Quântica
- * Faz o mapeamento da transformação
+ * This step makes a mapping.
  *
  * Computational Complexity (Big-O Notation):
  * O(E*(n^2))
@@ -281,9 +284,7 @@ void QuantumDistinctness::firstStepQuantumWalk() { //O(E*(n^2))
 /*
  * Second Step Quantum Walk
  *
- * Segundo passo da Caminhada Quântica
- * Faz a mudança do Estado de Hilbert 
- * de H para H'
+ * Change the Hilbert space H, transforming this in H' 
  *
  * Computational Complexity (Big-O Notation):
  * O(Pnr)
@@ -317,9 +318,6 @@ void QuantumDistinctness::secondStepQuantumWalk() { //O(Pnr)
 /*
  * Third Step Quantum Walk
  *
- * Terceiro passo da Caminhada Quântica
- * Imprime com Xy no lugar correspondente ao y
- *
  * Computational Complexity (Big-O Notation):
  * 
  */
@@ -331,8 +329,7 @@ void QuantumDistinctness::thirdStepQuantumWalk() {
 /*
  * Fourth Step Quantum Walk
  *
- * Quarto passo da Caminhada Quântica
- * Faz o mapeamento da transformação
+ * Makes a new mapping.
  *
  * Computational Complexity (Big-O Notation):
  * O(P*(n^2))
@@ -351,9 +348,6 @@ void QuantumDistinctness::fourthStepQuantumWalk() { //O(P*(n^2))
 /*
  * Fifth Step Quantum Walk
  *
- * Quinto passo da Caminhada Quântica
- * Apaga o elemento em X correspondente 
- * ao novo y
  *
  * Computational Complexity (Big-O Notation):
  * O(Pnr)
@@ -366,9 +360,7 @@ void QuantumDistinctness::fifthStepQuantumWalk() { //O(Pnr)
 /*
  * Sixth Step Quantum Walk
  *
- * Sexto passo da Caminhada Quântica
- * Retorna de volta para o estado de 
- * Hilbert H
+ * Comes back to the initial Hilbert Space, H. 
  *
  * Computational Complexity (Big-O Notation):
  * O(Pn)
@@ -401,9 +393,7 @@ void QuantumDistinctness::sixthStepQuantumWalk() { //O(Pn)
 
 /*
  * Deterministic Measurement
- *
- * Medição determinística do estado
- * Medição feita para efeitos de comparação
+ * Here we verify the correct answer to compare with the answer gave by the probabilistic measurement.
  *
  * Computational Complexity (Big-O Notation):
  * O(En)
@@ -448,8 +438,9 @@ void QuantumDistinctness::deterministic_measurement(){ //O(En)
 
 /*
  * Probabilistic Measurement
- *
- * Medição probabilística do estado
+ * Here we simulates de measurement. We get, randomly, a number
+ * and we check which range, represented by the states of superposition,
+ * this number is, getting the state measured.
  *
  * Computational Complexity (Big-O Notation):
  * O(En)
@@ -496,7 +487,6 @@ void QuantumDistinctness::probabilistic_measurement() { //O(En)
 /*
  * Display In File Without X - Dimension H
  *
- * Mostra no Arquivo os estados sem o X
  * |S>|y>
  *
  * Computational Complexity (Big-O Notation):
@@ -516,7 +506,6 @@ void QuantumDistinctness::display_in_file_without_x_H() {
 /*
  * Display In File With X - Dimension H
  *
- * Mostra no Arquivo os estados com o X
  * |S>|x>|y>
  *
  * Computational Complexity (Big-O Notation):
@@ -536,7 +525,6 @@ void QuantumDistinctness::display_in_file_with_x_H() {
 /*
  * Display In File With X - Dimension H'
  *
- * Mostra no Arquivo os estados com o X
  * |S>|x>|y>
  *
  * Computational Complexity (Big-O Notation):
@@ -556,8 +544,7 @@ void QuantumDistinctness::display_in_file_with_x_H_Line() { //O(Pn)
 /*
  * Display In File With X With 0 - Dimension H'
  *
- * Mostra no Arquivo os estados com o X
- * com 0 no lugar do novo y no X |S>|x>|y>
+ *|S>|x>|0>
  *
  * Computational Complexity (Big-O Notation):
  * O(Pnr)
@@ -574,10 +561,7 @@ void QuantumDistinctness::display_in_file_with_x_H_Line_with_0(){ //O(Pnr)
 }
 
 /*
- * Verify Collision
- *
- * Verifica o conjunto para ver quais são 
- * as posições que possuem colisões
+ * Verify Collision to discover which positions has collision.
  *
  * Computational Complexity (Big-O Notation):
  * O(r^2)
@@ -603,9 +587,9 @@ bool QuantumDistinctness::verifyCollision(set<int> S){ //O(r^2)
 }
 
 /*
- * Sub Sets
+ * Subsets
  *
- * Cálculo dos SubConjuntos
+ * Calculate the subsets
  *
  * Computational Complexity (Big-O Notation):
  * O((2^n)*n*log(n-r)) -> O(2^n)
@@ -651,7 +635,7 @@ void QuantumDistinctness::sub_sets() { //O((2^n)*((n-r)*log(n-r))) -> O((2^n)*n*
 /*
  * Menu
  *
- * Menu do Simulador
+ * Menu of simulator
  *
  * Computational Complexity (Big-O Notation):
  * O(1)
@@ -696,13 +680,12 @@ void QuantumDistinctness::menu(){
 /*
  * Random List
  *
- * Gera Lista Aleatória de Valores 
- * o Usuário
+ * Generate a list randomly 
  *
  * Computational Complexity (Big-O Notation):
  * O(n)
  */
-void QuantumDistinctness::randomList(){ //fazer proteções?
+void QuantumDistinctness::randomList(){
 	int lowerLimit, upperLimit;
 	cout << "Enter the number of values: ";
 	cin >> N;
@@ -739,12 +722,12 @@ void QuantumDistinctness::randomList(){ //fazer proteções?
 /*
  * User List
  *
- * Pega a Lista de Valores do Usuário
+ * Get a list passed by user.
  *
  * Computational Complexity (Big-O Notation):
  * O(n)
  */
-void QuantumDistinctness::userList(){ //fazer proteções?
+void QuantumDistinctness::userList(){
 	cout << "Enter the number of values: ";
 	cin >> N;
 	if(N < MINIMUM){

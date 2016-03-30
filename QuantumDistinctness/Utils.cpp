@@ -1,5 +1,5 @@
 /*
- * Element Distinctness Simulator
+ * Quantum Element Distinctness Simulator
  *
  * File: Utils.cpp
  *
@@ -7,29 +7,28 @@
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
- *      Email: alexandresantiago@id.uff.br
+ *      Email: santiago@cos.ufrj.br
  *             matheusmanzoli@gmail.com
  *
- * Trabalho de Monografia para a 
+ * B.Sc. dissertation for the 
  * Universidade Federal Fluminense.
  * Institute of Computing.
  * Niterói, Rio de Janeiro, Brazil.
  *
- * Este arquivo contém métodos úteis usadas no
- * Simulador de Distinção de Elementos.
+ * This file contains methods useful used in QEDS.
  */
 
 #include "Library.h"
 
 /*
- * Construtor da Classe Utils
+ * Builder
  */
 Utils::Utils() {
     binomialCoefficients = NULL;
 }
 
 /*
- * Destrutor da Classe Utils
+ * Destructor
  */
 Utils::~Utils() {
     if(binomialCoefficients != NULL)
@@ -41,12 +40,11 @@ Utils::~Utils() {
  * http://www.ebah.com.br/content/ABAAAfTVEAG/tabela-coeficientes-binomiais
  * http://www.brpreiss.com/books/opus5/html/img1869.gif
  *
- * Método que calcula o Coeficiente Binomial, utilizada 
- * na Combinação.
+ * This method calculates the binomial coeficient used in combination.
  *
  * Parameters:
- * n = tamanho do conjunto.
- * r = tamanho do subconjunto.
+ * n = set's size.
+ * r = subset's size.
  *
  * Computational Complexity (Big-O Notation):
  * O(n^2)
@@ -76,15 +74,15 @@ unsigned int Utils::combinatorial(int n, int r) { //O(n^2)
 /*
  * Calculate Position
  *
- * Calcula a nova posição para a mudança do estado de Hilbert H.
- * Calcula tanto a mudança de H para H', quanto o inverso.
+ * Calculates the new position for the change in Hilbert Space H.
+ * Calculates the both, H->H' and H'->H.
  *
  * Parameters:
  * S = 
- * initialPositionS = posição inicial do vetor S.
- * N = tamanho total dos valores.
- * r = tamanho do subconjunto.
- * previousValueS = valor anterior a posição inicial do vetor S.
+ * initialPositionS = Initial position of vector S.
+ * N = Total size of values.
+ * r = subset's size.
+ * previousValueS = Previous value of initial position of vector S.
  *
  * Computational Complexity (Big-O Notation):
  * O()
@@ -105,16 +103,16 @@ int Utils::calculate_position(vector<int> S, int initialPositionS, int n, int r,
 /*
  * Set Intersection
  *
- * Calcula a interseção de dois conjuntos.
+ * Calculate the intersection of two sets.
  *
  * Parameters:
- * set1 = conjunto 1.
- * set2 = conjunto 2.
+ * set1 = set 1.
+ * set2 = set 2.
  *
  * Computational Complexity (Big-O Notation):
- * s1 = tamanho de set1 ==>  s1 <= r
- * s2 = tamanho de set2 ==>  s2 == r
- * O Set utiliza a árvore rubro-negra
+ * s1 = size of set1 ==>  s1 <= r
+ * s2 = size of set2 ==>  s2 == r
+ * O Set uses the red-black tree.
  * O(r*log(r))
  */
 set<int> Utils::set_intersection(set<int> set1, set<int> set2) { //O(r*log(r))
@@ -133,11 +131,11 @@ set<int> Utils::set_intersection(set<int> set1, set<int> set2) { //O(r*log(r))
 /*
  * Max Value
  *
- * Calcula o valor máximo entre dois números
+ * Calculate the maximum value between two numbers
  *
  * Parameters:
- * value1 = valor 1.
- * value2 = valor 2.
+ * value1 = value 1.
+ * value2 = value 2.
  *
  * Computational Complexity (Big-O Notation):
  * O(1)

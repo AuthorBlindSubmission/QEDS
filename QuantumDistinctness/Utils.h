@@ -1,5 +1,5 @@
 /*
- * Element Distinctness Simulator
+ * Quantum Element Distinctness Simulator
  *
  * File: Utils.h
  *
@@ -7,17 +7,16 @@
  *    Authors: Alexandre Santiago de Abreu
  *             Matheus Manzoli Ferreira
  *
- *      Email: alexandresantiago@id.uff.br
+ *      Email: santiago@cos.ufrj.br
  *             matheusmanzoli@gmail.com
  *
- * Trabalho de Monografia para a 
+ * B.Sc. dissertation for the 
  * Universidade Federal Fluminense.
  * Institute of Computing.
  * Niterói, Rio de Janeiro, Brazil.
  *
- * Este arquivo contém as chamadas dos métodos
- * úteis usadas no Simulador de Distinção 
- * de Elementos.
+ * This file contains methods useful used in QEDS.
+ * All description of methods are in cpp file.
  */
 
 #ifndef UTILS_H_
